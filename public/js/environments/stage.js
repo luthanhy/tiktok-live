@@ -11,6 +11,7 @@ import { variantDefs } from '../themes/variants.js';
 import { escapeHtml, shortName, wait } from '../core/util.js';
 
 const MAX_CROWD = 44;
+const BASE_CROWD = 12; // relatives of both families are always there, so an empty room never looks deserted
 const MAX_SAY = 4;
 
 const chairSvg = ({ frame = '#f6efe4', sash = '#f6c3d1' } = {}) =>
@@ -108,6 +109,10 @@ export class Stage {
     this.current = id;
     this.root.dataset.scene = id;
     if (transition === 'cut' || !prev) {
+      // A cut is instant: no cross-fade (which would also stall on a hidden/occluded window).
+      this.root.classList.add('no-fade');
+      requestAnimationFrame(() => requestAnimationFrame(() => this.root.classList.remove('no-fade')));
+      setTimeout(() => this.root.classList.remove('no-fade'), 500);
       for (const [sid, els] of Object.entries(this.sceneEls)) {
         els.back.classList.toggle('active', sid === id);
         els.front.classList.toggle('active', sid === id);
@@ -293,13 +298,13 @@ export class Stage {
   /**
    * The standing crowd at the back of the venue grows with the live audience
    * (viewer count when connected, otherwise how many guests have arrived), on a log scale:
-   * 10 viewers ≈ 17 people, 100 ≈ 33, 1000+ = full house.
+   * at least BASE_CROWD relatives, 10 viewers ≈ 17 people, 100 ≈ 33, 1000+ = full house.
    */
   setAudience({ viewers, guests } = {}) {
     if (viewers != null) this.viewers = viewers;
     if (guests != null) this.arrived = guests;
     const n = Math.max(this.viewers || 0, this.arrived || 0);
-    const size = Math.min(MAX_CROWD, Math.round(5 * Math.log2(1 + n)));
+    const size = Math.min(MAX_CROWD, Math.max(BASE_CROWD, Math.round(5 * Math.log2(1 + n))));
     if (size === this.crowdSize) return;
     this.crowdSize = size;
     this.renderCrowd();

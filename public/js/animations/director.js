@@ -198,6 +198,14 @@ export class Director {
       case 'hearts':
         this.ov.scorePopup(a.count, '❤️');
         break;
+      case 'mc_prompt': {
+        // Quiet room: the MC (or a banner if the MC is off stage) invites viewers to join in.
+        const mc = this.stage.cast.mc;
+        if (mc && !mc.el.classList.contains('hidden') && !this.cinematicRunning) this.ov.bubble(mc, a.text, { style: 'mc', ms: 6500 });
+        else this.ov.banner({ kicker: '🎤 MC mời cả nhà', title: a.text, style: 'pink', ms: 5200 });
+        this.hud.flashTip?.();
+        return;
+      }
       case 'guest_arrival':
         this.ov.scorePopup(25, '👰');
         break;

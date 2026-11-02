@@ -187,6 +187,7 @@ class WeddingEngine {
     if (status === 'idle' || status === 'ended') return { ok: false, reason: status === 'idle' ? 'not_started' : 'round_over' };
     const amount = Math.max(1, Number(evt.amount ?? evt.count ?? evt.gift?.count ?? 1));
     const e = { ...evt, amount };
+    if (e.type !== 'join') this.lastViewerAt = this.clock(); // arrivals alone don't make the room lively
     let out;
     switch (e.type) {
       case 'like':
@@ -390,7 +391,10 @@ class WeddingEngine {
     this.mode.onTick(now);
     if (this.state.status !== 'running') return;
     const nextIdx = storyline.nextAutoIndex(this.cfg.storyline, this.state, now, { durationScale: this.mode.durationScale() });
-    if (nextIdx !== null) this.enterChapter(nextIdx, { manual: false });
+    if (nextIdx !== null) return this.enterChapter(nextIdx, { manual: false });
+    // Quiet room: the MC invites viewers to take part (what to type, what to gift).
+    const text = this.announcer.idle(this.chapter().id, { lastActivityAt: Math.max(this.lastViewerAt || 0, this.state.chapterStartedAt || 0) });
+    if (text) this.emit('mc_prompt', PRIORITY.follow, { text, tts: text }, { coalesceKey: 'mc_prompt', merge: (_a, b) => b });
   }
 
   enterChapter(index, { manual = false } = {}) {

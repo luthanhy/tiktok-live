@@ -575,6 +575,7 @@
     "follows": true,
     "shares": true,
     "joins": true,
-    "joinGapMs": 20000
+    "joinGapMs": 20000,
+    "idlePromptSec": 40
   }
 }

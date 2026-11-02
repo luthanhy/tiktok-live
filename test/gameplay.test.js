@@ -344,3 +344,25 @@ test('announcer never repeats the same phrasing twice in a row', () => {
   assert.notEqual(first, second);
   assert.ok(LINES.gift.length >= 3 && LINES.bigGift.length >= 3);
 });
+
+test('a quiet room gets MC invitations, spaced out and reset by viewer activity', () => {
+  const { engine, queue, clockRef } = makeEngine();
+  engine.start();
+  const prompts = () => queue.items.filter((i) => i.kind === 'mc_prompt');
+  clockRef.now += 20000;
+  engine.tick();
+  assert.equal(prompts().length, 0, 'not before idlePromptSec');
+  clockRef.now += 25000;
+  engine.tick();
+  assert.equal(prompts().length, 1);
+  assert.ok(prompts()[0].payload.tts.length > 10, 'the MC reads the invitation');
+  clockRef.now += 10000;
+  engine.handle({ type: 'like', user: { id: 'u', name: 'Lan' }, count: 5 });
+  clockRef.now += 30000;
+  engine.tick();
+  assert.equal(prompts().length, 1, 'activity pushes the next invitation back');
+  clockRef.now += 15000;
+  engine.tick();
+  assert.equal(prompts().length, 2);
+  assert.notEqual(prompts()[0].payload.text, prompts()[1].payload.text);
+});

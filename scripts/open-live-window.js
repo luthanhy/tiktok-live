@@ -47,7 +47,11 @@ const width = landscape ? Math.round((height * 16) / 9) : Math.round((height * 9
 const url = `http://localhost:${port}/?obs=1${landscape ? '&layout=landscape' : ''}`;
 const profile = path.join(os.tmpdir(), 'dam-cuoi-live-window');
 
-spawn(exe, [`--app=${url}`, `--window-size=${width},${height}`, '--window-position=0,0', '--autoplay-policy=no-user-gesture-required', `--user-data-dir=${profile}`, '--no-first-run', '--lang=vi'], { detached: true, stdio: 'ignore' }).unref();
+// LIVE Studio usually sits on top of this window. Without these flags the browser stops painting
+// (and freezes animations/timers) for an occluded or background window, so the capture would freeze.
+const KEEP_RENDERING = ['--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding', '--disable-background-timer-throttling'];
+
+spawn(exe, [`--app=${url}`, `--window-size=${width},${height}`, '--window-position=0,0', '--autoplay-policy=no-user-gesture-required', ...KEEP_RENDERING, `--user-data-dir=${profile}`, '--no-first-run', '--lang=vi'], { detached: true, stdio: 'ignore' }).unref();
 
 console.log(`Đã mở cửa sổ ${landscape ? 'ngang 16:9' : 'dọc 9:16'} ${width}×${height} bằng ${path.basename(exe)}: ${url}`);
 console.log('Trong TikTok LIVE Studio: Add source → Window capture → chọn cửa sổ "Đám Cưới Live – Ngày Chung Đôi", rồi kéo khung cho kín màn hình dọc.');

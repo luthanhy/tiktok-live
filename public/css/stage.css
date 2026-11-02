@@ -48,6 +48,7 @@ body.obs { background: transparent; }
 #scene-back, #scene-front, #cast, #world-ui { position: absolute; inset: 0; }
 #scene-front { pointer-events: none; }
 .scene { position: absolute; inset: -40px; opacity: 0; transition: opacity 900ms ease; }
+#stage.no-fade .scene { transition: none; }
 .scene.active { opacity: 1; }
 .scene-svg { position: absolute; left: 40px; top: 40px; width: 1920px; height: 1080px; overflow: visible; }
 .scene-back .L-far { transform: translate(calc(var(--par-x) * -1 + var(--drift-x) * -0.5), calc(var(--par-y) * -1 + var(--drift-y) * -0.5)); transition: transform var(--cam-ms) ease; }
@@ -697,3 +698,18 @@ body[data-theme="luxury"] .glass { box-shadow: 0 12px 36px rgba(90, 60, 30, 0.18
 #stage[data-layout="portrait"] .photo-booth { right: 40px; top: 880px; bottom: auto; }
 #stage[data-layout="portrait"] .float-layer { display: none; } /* seat bubbles + TikTok chat already show comments */
 #stage[data-layout="portrait"] .letterbox { display: none; }
+
+/* ------------------------------------------------------------------ how-to ticker */
+.tip-ticker { position: absolute; left: 50%; bottom: 102px; width: 760px; transform: translateX(-50%) scale(var(--ui-boost)); transform-origin: bottom center; display: flex; align-items: center; gap: 14px; padding: 10px 20px; border-radius: 999px; transition: opacity 0.6s; }
+.tt-label { flex: none; padding: 5px 12px; border-radius: 999px; background: var(--rose); color: #fff; font: 800 13px/1 var(--ui); letter-spacing: 1px; text-transform: uppercase; }
+.tt-text { flex: 1; min-width: 0; font: 700 20px/1.25 var(--ui); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tt-text.in { animation: tipIn 0.6s cubic-bezier(.3, 1.3, .5, 1); }
+@keyframes tipIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.tip-ticker.flash-tip { animation: tipFlash 1.4s ease 2; }
+@keyframes tipFlash { 0%, 100% { box-shadow: var(--shadow); } 40% { box-shadow: 0 0 0 4px var(--rose), 0 0 30px var(--rose); } }
+#stage.cinematic .tip-ticker { opacity: 0.25; }
+/* portrait: right under the HUD band, above the couple, clear of TikTok's chat */
+#stage[data-layout="portrait"] .tip-ticker { top: 812px; bottom: auto; width: 1032px; transform: translateX(-50%); padding: 12px 22px; }
+#stage[data-layout="portrait"] .tt-label { font-size: 17px; padding: 7px 14px; }
+#stage[data-layout="portrait"] .tt-text { font-size: 28px; white-space: normal; }
+#stage[data-layout="portrait"] #toasts { top: 920px; }

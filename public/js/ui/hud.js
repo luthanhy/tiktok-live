@@ -16,6 +16,17 @@ import { avatarHtml, ROLE_LABEL } from '../effects/overlays.js';
 const CHAPTER_ICONS = { preparation: '🌿', bride_entrance: '👰', ceremony: '🕊️', ring_exchange: '💍', kiss: '💋', reception: '🥂', finale: '🎆' };
 const fmtTime = (sec) => `${Math.floor(sec / 60)}:${String(Math.max(0, sec) % 60).padStart(2, '0')}`;
 
+const TIPS = [
+  '❤️ Thả tim để tăng niềm vui cho đám cưới',
+  '💬 Gõ "hôn đi" để cô dâu chú rể hôn nhau',
+  '🦤 Gõ tên con vật: "con đà điểu", "con voi"… nó sẽ chạy vào lễ cưới',
+  '🌹 Tặng hoa hồng để trang trí rạp cưới',
+  '🥂 Gõ "dzô" để cả nhà nâng ly chúc mừng',
+  '🎤 Mỗi bình luận đều được MC đọc to',
+  '👑 Tặng quà để lên Bảng Vàng Khách Quý',
+  '➕ Theo dõi để được mời vào ghế khách quý'
+];
+
 export class Hud {
   constructor(root) {
     this.root = root;
@@ -69,8 +80,32 @@ export class Hud {
           <div><span>💬</span><b data-k="c-comments">0</b></div>
           <div><span>💗</span><b data-k="c-likes">0</b></div>
         </div>
-      </footer>`;
+      </footer>
+
+      <div class="tip-ticker glass"><span class="tt-label">Cách tham gia</span><span class="tt-text" data-k="tip"></span></div>`;
     this.$ = (k) => this.root.querySelector(`[data-k="${k}"]`);
+    this.startTips();
+  }
+
+  /** Rotating "how to join in" line so a viewer who just arrived knows what to do, even in a quiet room. */
+  startTips() {
+    this.tipIndex = 0;
+    const show = () => {
+      const el = this.$('tip');
+      if (!el) return;
+      el.classList.remove('in');
+      void el.offsetWidth;
+      el.textContent = TIPS[this.tipIndex++ % TIPS.length];
+      el.classList.add('in');
+    };
+    show();
+    clearInterval(this.tipTimer);
+    this.tipTimer = setInterval(show, 6000);
+  }
+
+  /** Draw attention to the tips (used when the MC invites a quiet room to join in). */
+  flashTip() {
+    replay(this.root.querySelector('.tip-ticker'), 'flash-tip');
   }
 
   setText(k, v) {

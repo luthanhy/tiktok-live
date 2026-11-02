@@ -40,6 +40,26 @@ const LINES = {
   comment: ['{name} nói: {text}', '{name} bảo: {text}']
 };
 
+/**
+ * What the MC says when the room has gone quiet: an invitation that tells new viewers what
+ * to do right now. Chapter-specific lines first, then general ones.
+ */
+const IDLE = {
+  preparation: ['Rạp cưới còn thiếu hoa! Cả nhà tặng một bông hồng để trang trí giúp nhà trai nhé!', 'Ai mới vào thì bấm theo dõi để được mời vào ghế khách quý nha!'],
+  bride_entrance: ['Cô dâu sắp bước ra rồi! Cả nhà thả tim thật nhiều để cổ vũ cô dâu nào!', 'Gõ "cô dâu đẹp quá" để khen cô dâu một câu đi cả nhà ơi!'],
+  ceremony: ['Hai họ đang làm lễ gia tiên. Cả nhà gửi một lời chúc để cùng chứng giám nhé!', 'Gõ "chúc mừng hạnh phúc" để lời chúc của bạn bay lên sân khấu!'],
+  ring_exchange: ['Nhẫn cưới đang chờ được trao! Cả nhà tặng quà để lấp đầy thanh Nhẫn cưới nào!', 'Chỉ cần một món quà nhỏ là cô dâu chú rể tiến gần tới lúc trao nhẫn rồi!'],
+  kiss: ['Gõ "hôn đi" thật nhiều để cô dâu chú rể trao nhau nụ hôn nào!', 'Cả nhà ơi, hô "hôn đi, hôn đi" cùng MC nào!'],
+  reception: ['Tiệc cưới bắt đầu rồi! Gõ "dzô" để cùng nâng ly, gõ "nhảy" để cả nhà lên sân khấu!', 'Tặng bánh để cắt bánh cưới, gõ "chụp ảnh" để chụp hình lưu niệm với cô dâu chú rể!'],
+  finale: ['Cảm ơn cả nhà đã tới chung vui! Thả tim và chia sẻ để đám cưới thêm đông vui nhé!', 'Ai chưa gửi lời chúc thì gõ ngay một câu chúc cho đôi uyên ương nha!'],
+  any: [
+    'Phòng live đang hơi yên ắng nha! Cả nhà thả tim để tăng niềm vui cho đám cưới nào!',
+    'Gõ tên một con vật như "con đà điểu" hay "con voi", nó sẽ chạy vào đám cưới đó!',
+    'Mỗi bình luận của bạn sẽ được MC đọc to và hiện trên đầu khách mời đó nha!',
+    'Ai tặng quà nhiều nhất sẽ lên Bảng Vàng Khách Quý, cả nhà ơi!'
+  ]
+};
+
 /** TikTok handles like "thao.vy_99" read badly: speak separators as spaces. */
 function speakableName(name) {
   const s = String(name || '').replace(/[._\-@#]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -106,6 +126,28 @@ class Announcer {
     return line;
   }
 
+  /**
+   * Invitation for a quiet room (no viewer activity for announcer.idlePromptSec). Alternates
+   * between a line for the current chapter and a general one, never repeating back to back.
+   * Returns '' when disabled or not due yet.
+   */
+  idle(chapterId, { lastActivityAt }) {
+    const a = this.cfg.announcer || {};
+    const gapMs = Number(a.idlePromptSec ?? 40) * 1000;
+    if (a.enabled === false || !(gapMs > 0)) return '';
+    const now = this.clock();
+    if (now - Math.max(lastActivityAt, this.lastIdleAt ?? -Infinity, this.lastAt) < gapMs) return '';
+    this.lastIdleAt = now;
+    this.lastAt = now;
+    this.idleCount = (this.idleCount || 0) + 1;
+    const pool = IDLE[chapterId] && this.idleCount % 2 ? IDLE[chapterId] : IDLE.any;
+    const key = `idle:${pool === IDLE.any ? 'any' : chapterId}`;
+    let i = Math.floor(this.random() * pool.length);
+    if (pool.length > 1 && i === this.lastPick[key]) i = (i + 1) % pool.length;
+    this.lastPick[key] = i;
+    return pool[i];
+  }
+
   comment({ name, text, wish }) {
     const mode = this.cfg.comments?.readAloud?.mode || 'all';
     if (mode === 'off' || (mode === 'wishes' && !wish)) return '';
@@ -113,4 +155,4 @@ class Announcer {
   }
 }
 
-module.exports = { Announcer, LINES, speakableName };
+module.exports = { Announcer, LINES, IDLE, speakableName };
