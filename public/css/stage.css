@@ -713,3 +713,48 @@ body[data-theme="luxury"] .glass { box-shadow: 0 12px 36px rgba(90, 60, 30, 0.18
 #stage[data-layout="portrait"] .tt-label { font-size: 14px; padding: 6px 12px; }
 #stage[data-layout="portrait"] .tt-text { font-size: 22px; white-space: normal; }
 #stage[data-layout="portrait"] #toasts { top: 720px; }
+
+/* =====================================================================
+   PORTRAIT v2 — measured on a real phone (TikTok LIVE viewer, 1080×1920 coordinates):
+   TikTok's own header (avatar, Follow, badges, viewers) covers y < ~290 and the chat +
+   input bar cover y > ~1220. Everything that must be read sits in 300–600; the couple and
+   the seats sit in 600–1210; nothing important under the chat. 30px side margins absorb
+   a capture that is scaled slightly too large in LIVE Studio.
+   ===================================================================== */
+#stage[data-layout="portrait"] #frame { transform: translate(-286px, 313px) scale(0.86); }
+#stage[data-layout="portrait"] .hud-top,
+#stage[data-layout="portrait"] .community-bar,
+#stage[data-layout="portrait"] .panel-left .happy-meter { display: none; }
+/* row 1 — chapter title (left) + its objective bar (right) */
+#stage[data-layout="portrait"] .panel-left { top: 300px; left: 30px; width: 1020px; transform: none; padding: 10px 16px; display: grid; grid-template-columns: 1fr 1.15fr; column-gap: 16px; align-items: center; }
+#stage[data-layout="portrait"] .panel-left .ch-kicker { grid-column: 1; grid-row: 1; font-size: 13px; letter-spacing: 3px; }
+#stage[data-layout="portrait"] .panel-left .ch-title { grid-column: 1; grid-row: 2; font-size: 40px; margin: 0; }
+#stage[data-layout="portrait"] .panel-left .objective { grid-column: 2; grid-row: 1 / span 2; margin: 0; padding: 8px 12px; }
+#stage[data-layout="portrait"] .panel-left .obj-head { font-size: 16px; margin-bottom: 6px; }
+#stage[data-layout="portrait"] .panel-left .bar.big { height: 14px; }
+/* row 2 — top 3 supporters as one line of chips */
+#stage[data-layout="portrait"] .panel-right { top: 400px; left: 30px; right: auto; width: 1020px; transform: none; padding: 6px 10px; display: flex; align-items: center; gap: 10px; }
+#stage[data-layout="portrait"] .panel-right .panel-title { flex: none; font-size: 26px; margin: 0 4px; white-space: nowrap; }
+#stage[data-layout="portrait"] .leaderboard { flex: 1; min-width: 0; flex-direction: row; gap: 8px; }
+#stage[data-layout="portrait"] .leaderboard li { flex: 1; min-width: 0; padding: 3px 8px 3px 3px; }
+#stage[data-layout="portrait"] .leaderboard li:nth-child(n + 4) { display: none; }
+#stage[data-layout="portrait"] .leaderboard .rank { width: 24px; font-size: 18px; }
+#stage[data-layout="portrait"] .leaderboard .lb-av, #stage[data-layout="portrait"] .leaderboard li.r1 .lb-av { width: 30px; height: 30px; }
+#stage[data-layout="portrait"] .leaderboard .who b { font-size: 16px; }
+#stage[data-layout="portrait"] .leaderboard .pts { font-size: 15px; }
+#stage[data-layout="portrait"] .leaderboard .empty { flex: 1; padding: 6px; font-size: 16px; }
+/* row 3 — how to join in */
+#stage[data-layout="portrait"] .tip-ticker { top: 466px; width: 1020px; padding: 7px 16px; }
+#stage[data-layout="portrait"] .tt-text { font-size: 21px; white-space: nowrap; }
+/* game-mode bar (only in modes), then gift toasts — all above the couple */
+#stage[data-layout="portrait"] .mode-panel { top: 524px; width: 1020px; transform: translate(-50%, -20px) scale(0.92); transform-origin: top center; }
+#stage[data-layout="portrait"] .mode-panel.show { transform: translate(-50%, 0) scale(0.92); }
+#stage[data-layout="portrait"] #toasts { top: 530px; right: 30px; transform: none; width: 420px; }
+#stage[data-layout="portrait"] #toasts > :nth-child(n + 2) { display: none; }
+#stage[data-layout="portrait"] .banner { top: 960px; }
+#stage[data-layout="portrait"] .chapter-card, #stage[data-layout="portrait"] .mega-title { top: 42%; }
+#stage[data-layout="portrait"] .ring-closeup { top: 600px; }
+#stage[data-layout="portrait"] .photo-booth { top: 620px; }
+/* sharper on phones: no soft-focus on the crowd */
+#stage[data-layout="portrait"] .crowd-guest { filter: saturate(0.85); }
+#stage[data-layout="portrait"]:has(.mode-panel.show) #toasts { top: 612px; }
