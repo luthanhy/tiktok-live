@@ -47,7 +47,7 @@ class ZeroTTSManager extends EventEmitter {
 
   startWorker() {
     const pyBin = this.resolvePythonBin();
-    logger.info(`Starting ZeroTTS worker with ${pyBin}`);
+    logger.info(`Khởi động ZeroTTS bằng ${pyBin}`);
     this.setStatus('loading');
     try {
       this.proc = spawn(pyBin, [path.join(ROOT, 'tts_worker.py')], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true });
@@ -57,7 +57,7 @@ class ZeroTTSManager extends EventEmitter {
       return;
     }
     this.proc.on('error', (err) => {
-      logger.warn(`TTS worker unavailable (${err.message}) — browser speech fallback will be used`);
+      logger.warn(`Không có ZeroTTS (${err.message}) — dùng giọng Việt của trình duyệt (Edge: Hoài My)`);
       this.ready = false;
       this.setStatus('unavailable');
     });
@@ -72,7 +72,7 @@ class ZeroTTSManager extends EventEmitter {
       if (msg) logger.debug(msg.slice(0, 400));
     });
     this.proc.on('exit', (code) => {
-      if (this.status !== 'unavailable') logger.warn(`TTS worker exited with code ${code} — browser speech fallback will be used`);
+      if (this.status !== 'unavailable') logger.warn(`ZeroTTS dừng (mã ${code}) — dùng giọng Việt của trình duyệt (Edge: Hoài My)`);
       this.ready = false;
       this.proc = null;
       if (this.status !== 'unavailable') this.setStatus('stopped');

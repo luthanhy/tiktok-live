@@ -1,7 +1,7 @@
 /**
- * 💍 WEDDING LIVE – THE BIG DAY
- * TikTok Live interactive wedding — server entry point.
- * Run with `bun start` (or `node server.js`).
+ * 💍 ĐÁM CƯỚI LIVE – NGÀY CHUNG ĐÔI
+ * Đám cưới tương tác thuần Việt cho TikTok LIVE — điểm khởi động máy chủ.
+ * Chạy: `npm run start:node` (hoặc `bun start`).
  */
 const { createApp } = require('./src/app');
 const logger = require('./src/core/logger');
@@ -13,20 +13,21 @@ async function main() {
   const port = await wedding.listen(PORT);
   const line = '='.repeat(64);
   console.log(line);
-  console.log('💍 WEDDING LIVE – THE BIG DAY');
-  console.log(`📺 Stage (1920×1080)    : http://localhost:${port}/`);
-  console.log(`🎥 OBS clean source     : http://localhost:${port}/?obs=1`);
-  console.log(`🎛️  Admin dashboard      : http://localhost:${port}/admin`);
-  console.log(`🔌 JSON-RPC 2.0          : POST http://localhost:${port}/rpc  ·  ws://localhost:${port}/ws`);
+  console.log('💍 ĐÁM CƯỚI LIVE – NGÀY CHUNG ĐÔI');
+  console.log(`📱 Sân khấu để live (dọc 9:16) : http://localhost:${port}/?obs=1`);
+  console.log(`📺 Sân khấu có nút chạy thử    : http://localhost:${port}/`);
+  console.log(`🎛️  Trang quản lý               : http://localhost:${port}/admin`);
+  console.log(`🔌 JSON-RPC 2.0                : POST http://localhost:${port}/rpc  ·  ws://localhost:${port}/ws`);
+  console.log('👉 Mở cửa sổ dọc cho TikTok LIVE Studio: npm run live');
   console.log(line);
 
   const channel = process.env.TIKTOK_USER || (wedding.config.wedding.tiktok?.autoConnect ? wedding.config.wedding.tiktok.username : '');
   if (channel) {
-    wedding.tiktok.connect(channel).catch((err) => logger.warn(`Auto-connect @${channel} failed: ${err.message}`));
+    wedding.tiktok.connect(channel).catch((err) => logger.warn(`Tự kết nối @${channel} thất bại: ${err.message}`));
   }
 
   const shutdown = async () => {
-    logger.info('Shutting down…');
+    logger.info('Đang tắt máy chủ…');
     await wedding.close().catch(() => {});
     process.exit(0);
   };

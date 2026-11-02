@@ -57,7 +57,7 @@ class ConfigStore {
       const override = readJson(file);
       if (name === 'wedding' && migrateToVietnamese(override, this.defaults.wedding)) {
         fs.writeFileSync(file, JSON.stringify(override, null, 2), 'utf8');
-        logger.info('Saved wedding config migrated to the Vietnamese storyline');
+        logger.info('Đã chuyển cấu hình đã lưu sang bản đám cưới Việt');
       }
       return deepMerge(base, override);
     } catch (err) {

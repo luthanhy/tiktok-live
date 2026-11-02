@@ -62,7 +62,7 @@ function createApp(options = {}) {
   if (options.persist !== false && fs.existsSync(stateFile)) {
     try {
       savedState = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
-      if (savedState?.version === 2) log.info(`Restored wedding state (love ${savedState.state.love}, chapter #${savedState.state.chapterIndex + 1})`);
+      if (savedState?.version === 2) log.info(`Đã khôi phục đám cưới (điểm ${savedState.state.love}, chương ${savedState.state.chapterIndex + 1})`);
       else log.warn('Saved state is from an older version — starting a fresh wedding');
     } catch (err) {
       log.warn(`Could not read ${stateFile}: ${err.message}`);
