@@ -1,0 +1,569 @@
+{
+  "couple": {
+    "brideName": "Linh",
+    "groomName": "Minh",
+    "weddingTitle": "WEDDING LIVE – THE BIG DAY",
+    "hashtag": "#TheBigDay"
+  },
+  "tiktok": {
+    "username": "",
+    "autoConnect": false
+  },
+  "storyline": {
+    "autoAdvance": true,
+    "loopAfterFinale": false,
+    "chapters": [
+      {
+        "id": "preparation",
+        "order": 1,
+        "title": "Wedding Preparation",
+        "subtitle": "Chuẩn bị lễ cưới",
+        "scene": "garden",
+        "threshold": 0,
+        "minDurationSec": 20,
+        "music": "prelude",
+        "enterSfx": [
+          "chime"
+        ],
+        "narration": "Khu vườn đang được trang hoàng. Chú rể đã chờ dưới cổng hoa, các vị khách đầu tiên đang đến!",
+        "goalHint": "Thả tim, follow & tặng hoa để trang trí lễ đường",
+        "reward": {
+          "happiness": 10
+        },
+        "meters": [
+          "preparation"
+        ],
+        "objective": {
+          "meter": "preparation"
+        },
+        "requireObjective": true
+      },
+      {
+        "id": "bride_entrance",
+        "order": 2,
+        "title": "The Bride's Entrance",
+        "subtitle": "Cô dâu tiến vào lễ đường",
+        "scene": "ceremony",
+        "threshold": 1000,
+        "minDurationSec": 25,
+        "music": "bridal_chorus",
+        "enterSfx": [
+          "bells",
+          "applause"
+        ],
+        "narration": "Cổng hoa đã mở! Cô dâu đang bước vào lễ đường giữa mưa cánh hoa hồng.",
+        "goalHint": "Cổ vũ cô dâu — mỗi bông hồng là một lời chúc phúc",
+        "reward": {
+          "happiness": 15
+        },
+        "meters": [],
+        "objective": {
+          "meter": "love"
+        },
+        "requireObjective": false
+      },
+      {
+        "id": "ceremony",
+        "order": 3,
+        "title": "The Wedding Ceremony",
+        "subtitle": "Nghi thức thành hôn",
+        "scene": "ceremony",
+        "threshold": 3000,
+        "minDurationSec": 25,
+        "music": "piano_romance",
+        "enterSfx": [
+          "chime"
+        ],
+        "narration": "MC bắt đầu nghi thức. Cô dâu và chú rể nắm tay nhau, trao lời thề nguyện trọn đời.",
+        "goalHint": "Gửi lời chúc để cùng chứng giám lời thề",
+        "reward": {
+          "happiness": 10
+        },
+        "meters": [],
+        "objective": {
+          "meter": "love"
+        },
+        "requireObjective": false
+      },
+      {
+        "id": "ring_exchange",
+        "order": 4,
+        "title": "Ring Exchange",
+        "subtitle": "Trao nhẫn cưới",
+        "scene": "ceremony",
+        "threshold": 6000,
+        "minDurationSec": 20,
+        "music": "piano_romance",
+        "enterSfx": [
+          "sparkle",
+          "chime"
+        ],
+        "narration": "Hộp nhẫn đã sẵn sàng… Hãy tặng quà để cặp nhẫn cưới được trao!",
+        "goalHint": "Tặng quà để lấp đầy Ring Meter — nhẫn cưới sẽ được trao!",
+        "reward": {
+          "happiness": 15
+        },
+        "meters": [
+          "ring"
+        ],
+        "objective": {
+          "meter": "ring"
+        },
+        "requireObjective": true
+      },
+      {
+        "id": "kiss",
+        "order": 5,
+        "title": "The Wedding Kiss",
+        "subtitle": "Nụ hôn hạnh phúc",
+        "scene": "ceremony",
+        "threshold": 10000,
+        "minDurationSec": 25,
+        "music": "wedding_march",
+        "enterSfx": [
+          "bells",
+          "cheer",
+          "fireworks"
+        ],
+        "narration": "Và bây giờ… chú rể có thể hôn cô dâu! Chúc mừng đôi vợ chồng mới cưới!",
+        "goalHint": "Cùng mở tiệc cưới linh đình",
+        "reward": {
+          "happiness": 25
+        },
+        "meters": [
+          "celebration"
+        ],
+        "objective": {
+          "meter": "love"
+        },
+        "requireObjective": false
+      },
+      {
+        "id": "reception",
+        "order": 6,
+        "title": "Wedding Reception",
+        "subtitle": "Tiệc cưới & khiêu vũ",
+        "scene": "reception",
+        "threshold": 16000,
+        "minDurationSec": 40,
+        "music": "waltz",
+        "enterSfx": [
+          "champagne",
+          "cheer"
+        ],
+        "narration": "Tiệc cưới bắt đầu! Cắt bánh, rót champagne và bước ra sàn nhảy nào!",
+        "goalHint": "Bánh cưới · Champagne · Sàn nhảy — mỗi thanh đầy là một màn ăn mừng",
+        "reward": {
+          "happiness": 20
+        },
+        "meters": [
+          "cake",
+          "champagne",
+          "dance",
+          "celebration"
+        ],
+        "objective": {
+          "meter": "love"
+        },
+        "requireObjective": false
+      },
+      {
+        "id": "finale",
+        "order": 7,
+        "title": "Forever Together",
+        "subtitle": "Đại tiệc hạnh phúc",
+        "scene": "grand",
+        "threshold": 25000,
+        "minDurationSec": 30,
+        "music": "finale",
+        "enterSfx": [
+          "fireworks",
+          "cheer",
+          "bells"
+        ],
+        "narration": "Cảm ơn tất cả khách mời đã cùng tổ chức đám cưới tuyệt vời này. Hạnh phúc trọn đời!",
+        "goalHint": "Mãi mãi bên nhau",
+        "reward": {
+          "happiness": 30
+        },
+        "meters": [
+          "celebration"
+        ],
+        "objective": {
+          "meter": "celebration"
+        },
+        "requireObjective": false
+      }
+    ]
+  },
+  "scoring": {
+    "like": {
+      "pointsPerLike": 1,
+      "maxLikesPerEvent": 30,
+      "happiness": 0.05
+    },
+    "follow": {
+      "points": 25,
+      "happiness": 3
+    },
+    "share": {
+      "points": 40,
+      "happiness": 4
+    },
+    "comment": {
+      "points": 5,
+      "happiness": 0.6
+    },
+    "join": {
+      "points": 1,
+      "happiness": 0
+    },
+    "giftDefaultPointsPerDiamond": 10
+  },
+  "meters": {
+    "happiness": {
+      "label": "Happiness",
+      "icon": "😊",
+      "max": 100,
+      "initial": 35,
+      "globalMeter": true,
+      "decayPerMinute": 4,
+      "sources": {
+        "like": 0.05,
+        "follow": 3,
+        "share": 4,
+        "comment": 0.6,
+        "giftHappiness": 1
+      },
+      "onFull": {
+        "bonusPoints": 300,
+        "resetTo": 0.6,
+        "action": "happiness_overflow"
+      }
+    },
+    "support": {
+      "label": "Community Support",
+      "icon": "🤝",
+      "max": 500,
+      "globalMeter": true,
+      "sources": {
+        "like": 1,
+        "share": 25,
+        "follow": 15,
+        "comment": 2
+      },
+      "onFull": {
+        "bonusPoints": 250,
+        "resetTo": 0,
+        "growth": 1.35,
+        "maxCap": 6000,
+        "action": "support_goal"
+      }
+    },
+    "preparation": {
+      "label": "Chuẩn bị lễ cưới",
+      "icon": "🌿",
+      "max": 600,
+      "sources": {
+        "like": 1,
+        "follow": 25,
+        "share": 30,
+        "comment": 8,
+        "giftPoints": 0.6,
+        "giftKeys": {
+          "rose": 20
+        }
+      },
+      "onFull": {
+        "bonusPoints": 200,
+        "resetTo": 0,
+        "growth": 1.25,
+        "maxCap": 4000,
+        "action": "meter_full"
+      }
+    },
+    "ring": {
+      "label": "Ring Meter",
+      "icon": "💍",
+      "max": 1500,
+      "sources": {
+        "like": 0.3,
+        "comment": 3,
+        "giftPoints": 1
+      },
+      "onFull": {
+        "bonusPoints": 400,
+        "resetTo": 0,
+        "growth": 1.3,
+        "maxCap": 6000,
+        "action": "meter_full"
+      }
+    },
+    "cake": {
+      "label": "Bánh cưới",
+      "icon": "🎂",
+      "max": 800,
+      "sources": {
+        "like": 0.4,
+        "comment": 4,
+        "giftPoints": 0.5,
+        "giftKeys": {
+          "doughnut": 200
+        }
+      },
+      "onFull": {
+        "bonusPoints": 250,
+        "resetTo": 0,
+        "growth": 1.3,
+        "maxCap": 5000,
+        "action": "meter_full"
+      }
+    },
+    "champagne": {
+      "label": "Champagne",
+      "icon": "🥂",
+      "max": 800,
+      "sources": {
+        "like": 0.3,
+        "share": 40,
+        "comment": 3,
+        "commentActions": {
+          "toast": 40
+        },
+        "giftPoints": 0.5
+      },
+      "onFull": {
+        "bonusPoints": 250,
+        "resetTo": 0,
+        "growth": 1.3,
+        "maxCap": 5000,
+        "action": "meter_full"
+      }
+    },
+    "dance": {
+      "label": "Sàn nhảy",
+      "icon": "💃",
+      "max": 800,
+      "sources": {
+        "like": 0.8,
+        "follow": 20,
+        "comment": 4,
+        "commentActions": {
+          "dance": 50
+        },
+        "giftPoints": 0.3
+      },
+      "onFull": {
+        "bonusPoints": 250,
+        "resetTo": 0,
+        "growth": 1.3,
+        "maxCap": 5000,
+        "action": "meter_full"
+      }
+    },
+    "celebration": {
+      "label": "Celebration",
+      "icon": "🎆",
+      "max": 1200,
+      "sources": {
+        "like": 0.5,
+        "share": 40,
+        "follow": 20,
+        "comment": 4,
+        "giftPoints": 0.6
+      },
+      "onFull": {
+        "bonusPoints": 300,
+        "resetTo": 0,
+        "growth": 1.3,
+        "maxCap": 8000,
+        "action": "meter_full"
+      }
+    }
+  },
+  "antiSpam": {
+    "commentCooldownMs": 3500,
+    "maxCommentLength": 90,
+    "duplicateCommentWindowMs": 20000,
+    "likeAggregateWindowMs": 800,
+    "followDedupWindowMs": 600000,
+    "shareCooldownMs": 15000,
+    "maxEventsPerUserPerMinute": 20
+  },
+  "queue": {
+    "maxSize": 200,
+    "dispatchIntervalMs": 350,
+    "maxBurst": 3,
+    "dropPolicy": "drop-lowest-priority"
+  },
+  "comments": {
+    "keywords": [
+      {
+        "action": "photo",
+        "match": [
+          "chụp ảnh",
+          "chup anh",
+          "photo",
+          "selfie",
+          "check in",
+          "checkin"
+        ]
+      },
+      {
+        "action": "kiss_cheer",
+        "match": [
+          "hôn đi",
+          "hon di",
+          "kiss",
+          "hôn",
+          "hun"
+        ]
+      },
+      {
+        "action": "dance",
+        "match": [
+          "nhảy",
+          "nhay",
+          "dance",
+          "khiêu vũ"
+        ]
+      },
+      {
+        "action": "toast",
+        "match": [
+          "cheers",
+          "dzô",
+          "dzo",
+          "zô",
+          "chúc rượu",
+          "nâng ly",
+          "trăm phần trăm"
+        ]
+      },
+      {
+        "action": "wish",
+        "match": [
+          "chúc",
+          "chuc",
+          "congrat",
+          "happy",
+          "hạnh phúc",
+          "hanh phuc",
+          "trăm năm",
+          "bách niên",
+          "love"
+        ]
+      }
+    ],
+    "defaultAction": "wish",
+    "readAloud": {
+      "mode": "all",
+      "minGapMs": 2500
+    }
+  },
+  "effects": {
+    "petals": true,
+    "hearts": true,
+    "confetti": true,
+    "fireworks": true,
+    "sparkles": true,
+    "lightBeams": true,
+    "cinematicTransitions": true,
+    "particleBudget": 650,
+    "cameraShake": true,
+    "floatingWishes": true,
+    "giftExplosions": true,
+    "commentSpawns": true,
+    "commentBubbles": true
+  },
+  "audio": {
+    "musicEnabled": true,
+    "sfxEnabled": true,
+    "ttsEnabled": true,
+    "ttsVoice": "maichi",
+    "musicVolume": 0.55,
+    "sfxVolume": 0.8,
+    "ttsVolume": 0.95,
+    "masterVolume": 0.9,
+    "muted": false
+  },
+  "mock": {
+    "autoSim": false,
+    "intervalMs": 2500
+  },
+  "theme": {
+    "variant": "luxury"
+  },
+  "mode": {
+    "active": "classic"
+  },
+  "leaderboard": {
+    "size": 10,
+    "maxTracked": 5000
+  },
+  "modes": {
+    "classic": {},
+    "bride_vs_groom": {
+      "teams": {
+        "bride": {
+          "label": "Team Cô Dâu",
+          "icon": "👰",
+          "keywords": [
+            "cô dâu",
+            "co dau",
+            "team bride",
+            "#bride",
+            "bride",
+            "nhà gái",
+            "nha gai"
+          ]
+        },
+        "groom": {
+          "label": "Team Chú Rể",
+          "icon": "🤵",
+          "keywords": [
+            "chú rể",
+            "chu re",
+            "team groom",
+            "#groom",
+            "groom",
+            "nhà trai",
+            "nha trai"
+          ]
+        }
+      },
+      "finaleBonus": 1000
+    },
+    "love_race": {
+      "roundSec": 180,
+      "roundBonus": 500,
+      "teams": {
+        "bride": {
+          "label": "Nhà Gái",
+          "icon": "🌸"
+        },
+        "groom": {
+          "label": "Nhà Trai",
+          "icon": "🌿"
+        }
+      }
+    },
+    "wedding_rush": {
+      "durationSec": 900,
+      "durationScale": 0.5,
+      "resultHoldSec": 25
+    },
+    "gift_battle": {
+      "roundSec": 120,
+      "winnerBonus": 300
+    },
+    "perfect_wedding": {
+      "chapterLimitSec": 240,
+      "maxMistakes": 3,
+      "resultHoldSec": 25
+    }
+  },
+  "debug": {
+    "enabled": true
+  }
+}

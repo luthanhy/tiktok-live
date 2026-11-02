@@ -1,16 +1,28 @@
 {
-  "name": "tiktok-live-temple-rpc",
-  "version": "1.0.0",
-  "description": "TikTok Live RPC Interactive Buddhist Temple (Bun.js + ZeroTTS giọng Mai Chi)",
+  "name": "tiktok-live-wedding",
+  "version": "3.0.0",
+  "description": "WEDDING LIVE – THE BIG DAY: TikTok Live interactive wedding game (Bun/Node + JSON-RPC 2.0 + ZeroTTS)",
   "main": "server.js",
   "scripts": {
     "start": "bun run server.js",
-    "dev": "bun --watch server.js"
+    "start:node": "node server.js",
+    "dev": "bun --watch server.js",
+    "build": "node scripts/build.js",
+    "lint": "eslint .",
+    "test": "node --test --test-reporter=spec",
+    "check": "npm run lint && npm run build && npm test"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "tiktok-live-connector": "^2.1.0",
     "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "globals": "^15.15.0"
   }
 }

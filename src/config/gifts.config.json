@@ -1,0 +1,190 @@
+{
+  "tiers": [
+    {
+      "id": "small",
+      "label": "Quà nhỏ",
+      "minDiamonds": 1,
+      "pointsPerDiamond": 10,
+      "happiness": 1,
+      "priority": 2,
+      "defaultInteraction": "sparkle_shower",
+      "announce": false,
+      "maxPoints": 600,
+      "rarity": "common",
+      "cooldownMs": 0,
+      "chapterBoost": false
+    },
+    {
+      "id": "medium",
+      "label": "Quà vừa",
+      "minDiamonds": 10,
+      "pointsPerDiamond": 6,
+      "happiness": 4,
+      "priority": 4,
+      "defaultInteraction": "champagne_pop",
+      "announce": true,
+      "maxPoints": 1200,
+      "rarity": "rare",
+      "cooldownMs": 1500,
+      "chapterBoost": false
+    },
+    {
+      "id": "large",
+      "label": "Quà lớn",
+      "minDiamonds": 100,
+      "pointsPerDiamond": 4,
+      "happiness": 12,
+      "priority": 7,
+      "defaultInteraction": "special_dance",
+      "announce": true,
+      "maxPoints": 3000,
+      "rarity": "epic",
+      "cooldownMs": 4000,
+      "chapterBoost": false
+    },
+    {
+      "id": "premium",
+      "label": "Quà siêu cấp",
+      "minDiamonds": 1000,
+      "pointsPerDiamond": 2,
+      "happiness": 30,
+      "priority": 10,
+      "defaultInteraction": "grand_celebration",
+      "announce": true,
+      "maxPoints": 8000,
+      "rarity": "legendary",
+      "cooldownMs": 0,
+      "chapterBoost": true
+    }
+  ],
+  "gifts": [
+    {
+      "key": "rose",
+      "label": "Hoa Hồng",
+      "ids": [
+        5655
+      ],
+      "names": [
+        "rose",
+        "hoa hồng",
+        "hoa hong"
+      ],
+      "interaction": "flower_delivery",
+      "counters": {
+        "flowers": 1
+      },
+      "rarity": "common",
+      "sound": "gift",
+      "cooldownMs": 0
+    },
+    {
+      "key": "heart",
+      "label": "Trái Tim",
+      "ids": [
+        7934,
+        5487
+      ],
+      "names": [
+        "heart me",
+        "finger heart",
+        "heart",
+        "trái tim",
+        "hand hearts",
+        "hand heart"
+      ],
+      "interaction": "heart_burst",
+      "counters": {
+        "hearts": 1
+      },
+      "rarity": "common",
+      "sound": "heart",
+      "cooldownMs": 0
+    },
+    {
+      "key": "perfume",
+      "label": "Nước Hoa",
+      "ids": [
+        5658
+      ],
+      "names": [
+        "perfume",
+        "nước hoa"
+      ],
+      "interaction": "perfume_mist",
+      "counters": {},
+      "rarity": "rare",
+      "sound": "sparkle",
+      "cooldownMs": 2500
+    },
+    {
+      "key": "doughnut",
+      "label": "Bánh Ngọt",
+      "ids": [
+        5879
+      ],
+      "names": [
+        "doughnut",
+        "cake",
+        "bánh"
+      ],
+      "interaction": "cake_delivery",
+      "counters": {},
+      "rarity": "rare",
+      "sound": "gift",
+      "cooldownMs": 2000
+    },
+    {
+      "key": "galaxy",
+      "label": "Dải Ngân Hà",
+      "ids": [
+        11046
+      ],
+      "names": [
+        "galaxy",
+        "ngân hà"
+      ],
+      "interaction": "light_show",
+      "counters": {},
+      "rarity": "epic",
+      "sound": "chime",
+      "cooldownMs": 6000,
+      "chapterRequirement": "ceremony"
+    },
+    {
+      "key": "lion",
+      "label": "Sư Tử",
+      "ids": [
+        6369
+      ],
+      "names": [
+        "lion",
+        "sư tử"
+      ],
+      "interaction": "grand_celebration",
+      "counters": {},
+      "rarity": "legendary",
+      "sound": "fanfare",
+      "cooldownMs": 0,
+      "chapterBoost": true
+    },
+    {
+      "key": "universe",
+      "label": "Vũ Trụ",
+      "ids": [
+        7312
+      ],
+      "names": [
+        "universe",
+        "vũ trụ",
+        "tiktok universe"
+      ],
+      "interaction": "fireworks_show",
+      "forceTier": "premium",
+      "counters": {},
+      "rarity": "legendary",
+      "sound": "fanfare",
+      "cooldownMs": 0,
+      "chapterBoost": true
+    }
+  ]
+}
