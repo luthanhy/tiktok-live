@@ -276,28 +276,37 @@ export function buildScenes({ brideName = 'Linh', groomName = 'Minh' } = {}, var
   const initials = `${(groomName || 'M')[0]} & ${(brideName || 'L')[0]}`.toUpperCase();
   const venue = VENUES[variant.venue] || VENUES.garden;
   const vid = variant.id;
-  const gardenSeats = chairRowMarks(
-    [
-      { y: 790, xs: { l: [560, 650, 740], r: [1180, 1270, 1360] } },
-      { y: 870, xs: { l: [510, 610, 710], r: [1210, 1310, 1410] } },
-      { y: 960, xs: { l: [460, 575, 690], r: [1230, 1345, 1460] } }
-    ],
-    ['l', 'r']
-  );
-  const ceremonySeats = chairRowMarks(
-    [
-      { y: 780, xs: { l: [590, 680, 770], r: [1150, 1240, 1330] } },
-      { y: 860, xs: { l: [530, 630, 730], r: [1190, 1290, 1390] } },
-      { y: 950, xs: { l: [470, 580, 690], r: [1230, 1340, 1450] } },
-      { y: 1050, xs: { l: [420, 545], r: [1375, 1500] } }
-    ],
-    ['l', 'r']
-  );
+  // Full rows of chairs on both sides of the aisle, out to the walls, so as many viewers as
+  // possible get a visible seat. inner = gap from the aisle centre, step = chair spacing at that depth.
+  const aisleRows = (rows) =>
+    chairRowMarks(
+      rows.map(({ y, inner, step }) => {
+        const l = [];
+        for (let x = 960 - inner; x >= 260; x -= step) l.push(x);
+        return { y, xs: { l, r: l.map((x) => 1920 - x) } };
+      }),
+      ['l', 'r']
+    );
+  const gardenSeats = aisleRows([
+    { y: 790, inner: 200, step: 92 },
+    { y: 870, inner: 240, step: 102 },
+    { y: 960, inner: 270, step: 115 },
+    { y: 1045, inner: 300, step: 125 }
+  ]);
+  const ceremonySeats = aisleRows([
+    { y: 780, inner: 190, step: 90 },
+    { y: 860, inner: 230, step: 100 },
+    { y: 950, inner: 270, step: 112 },
+    { y: 1045, inner: 300, step: 125 }
+  ]);
+  // Banquet: six round tables around the cake / champagne area, eight guests' worth of bustle each side.
   const tables = [
-    { x: 520, y: 900 },
-    { x: 1400, y: 900 },
-    { x: 470, y: 1060 },
-    { x: 1450, y: 1060 }
+    { x: 300, y: 880 },
+    { x: 1620, y: 880 },
+    { x: 360, y: 1010 },
+    { x: 720, y: 1035 },
+    { x: 1200, y: 1035 },
+    { x: 1560, y: 1010 }
   ];
   const tableSeats = [];
   tables.forEach(({ x: tx, y: ty }) => {
@@ -305,8 +314,10 @@ export function buildScenes({ brideName = 'Linh', groomName = 'Minh' } = {}, var
   });
   const danceSpots = [];
   for (let i = 0; i < 12; i++) danceSpots.push({ x: 470 + i * 89, y: i % 2 ? 690 : 710, standing: true });
+  for (let i = 0; i < 10; i++) danceSpots.push({ x: i < 5 ? 300 + i * 92 : 1160 + (i - 5) * 92, y: 770 + (i % 2) * 18, standing: true });
   const grandSpots = [];
   for (let i = 0; i < 10; i++) grandSpots.push({ x: 470 + i * 109, y: 1010 + (i % 2) * 22, standing: true, scale: 0.62 });
+  for (let i = 0; i < 12; i++) grandSpots.push({ x: 300 + i * 120, y: 955 + (i % 2) * 16, standing: true, scale: 0.55 });
 
   return {
     garden: {

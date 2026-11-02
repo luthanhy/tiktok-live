@@ -20,7 +20,7 @@ const { sanitizeUserName, sanitizeText, sanitizeAvatar } = require('../events/sa
 
 const STATE_VERSION = 2;
 const PRIORITY = { chapter: 100, meter: 30, manual: 50, overflow: 8, support: 6, follow: 3, share: 3, comment: 2, hearts: 1 };
-const MAX_GUESTS = 40;
+const MAX_GUESTS = 60;
 const EMOJI_RE = /\p{Extended_Pictographic}/gu;
 const MAX_WISHES = 30;
 const MAX_LOG = 250;
@@ -135,7 +135,7 @@ class WeddingEngine {
     return { id, name, avatar: sanitizeAvatar(user.avatar) };
   }
 
-  /** Seat the viewer among the visible guests (most recent 40). Returns true if they are new. */
+  /** Seat the viewer among the visible guests (most recent MAX_GUESTS). Returns true if they are new. */
   seatGuest(user, role) {
     const team = this.mode.teamOf(user.id);
     const existing = this.state.guests.find((g) => g.id === user.id);
@@ -255,6 +255,8 @@ class WeddingEngine {
     const user = this.normalizeUser(e.user);
     const sup = this.board.get(user, this.clock());
     const points = this.addLove(this.cfg.scoring?.join?.points ?? 1, sup);
+    // Everyone who enters the room takes a seat at the wedding; a walk-in shows them arriving.
+    if (this.seatGuest(user, 'guest')) this.emit('walk_in', PRIORITY.hearts, { user }, { coalesceKey: 'walk_in', merge: (_a, b) => b });
     const tts = this.announcer.join(user.name);
     if (tts) this.emit('welcome', PRIORITY.hearts, { user, tts }, { coalesceKey: 'welcome', merge: (_a, b) => b });
     return { ok: true, user, supporter: sup, points };

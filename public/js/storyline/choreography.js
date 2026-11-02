@@ -41,6 +41,28 @@ function resetPoses(stage, expr = 'happy') {
   }
 }
 
+/**
+ * A busy banquet: waiters carry trays between tables and guests stroll from table to table,
+ * a new figure every ~2.4 s, at most four at a time, paused while a showpiece runs.
+ */
+function banquetBustle({ stage, signal }) {
+  let k = 0;
+  return every(signal, 2400, async () => {
+    if (stage.root.classList.contains('cinematic') || stage.walkers.size >= 4) return;
+    const tables = stage.scenes[stage.current]?.tables || [];
+    if (tables.length < 2) return;
+    k += 1;
+    const waiter = k % 2 === 0;
+    const a = tables[k % tables.length];
+    const b = tables[(k * 3 + 1) % tables.length];
+    const fromSide = k % 3 === 0 ? (a.x < 960 ? 'entryLeft' : 'entryRight') : { x: a.x + 120, y: a.y + 30 };
+    const npc = stage.spawnWalker({ id: `npc-${k % 9}`, name: '' }, { from: fromSide, carry: waiter ? 'cake' : '', tag: false });
+    npc.setPose(waiter ? 'present' : 'idle');
+    await npc.moveTo(b.x - 120, b.y + 30, { speed: waiter ? 300 : 200 });
+    stage.removeWalker(npc);
+  });
+}
+
 export const CHAPTERS = {
   // ---------------------------------------------------------------- 1
   preparation: {
@@ -352,6 +374,7 @@ export const CHAPTERS = {
       const { stage, ov, signal } = ctx;
       const { mc, gm2, bm2 } = stage.cast;
       let n = 0;
+      const bustle = banquetBustle(ctx).catch(() => {}); // ends with the chapter (AbortError)
       await every(signal, 9000, async () => {
         n += 1;
         if (n % 5 === 0) {
@@ -362,6 +385,7 @@ export const CHAPTERS = {
         else ov.bubble(pick([gm2, bm2]), pick(['Dzô! 🥂', 'Nhảy thôi!', 'Bánh cưới ngon quá!']), { ms: 2200 });
         stage.guestsReact(n % 2 ? 'cheer' : 'dance', 1200);
       });
+      await bustle;
     }
   },
 

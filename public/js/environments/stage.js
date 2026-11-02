@@ -382,9 +382,9 @@ export class Stage {
   }
 
   /** A temporary full-body viewer character (arrival, flower delivery…). */
-  spawnWalker(user, { carry = '', from = 'entryRight' } = {}) {
-    const start = this.mark(from);
-    const actor = this.characters.create({ id: `walker-${Math.random().toString(36).slice(2, 7)}`, type: 'guest', name: shortName(user.name, 14), user, carry, size: 0.86, x: start.x, y: start.y, tag: true });
+  spawnWalker(user, { carry = '', from = 'entryRight', tag = true } = {}) {
+    const start = typeof from === 'string' ? this.mark(from) : from;
+    const actor = this.characters.create({ id: `walker-${Math.random().toString(36).slice(2, 7)}`, type: 'guest', name: tag ? shortName(user.name, 14) : '', user, carry, size: 0.86, x: start.x, y: start.y, tag });
     actor.el.classList.add('walker');
     this.walkers.add(actor);
     return actor;

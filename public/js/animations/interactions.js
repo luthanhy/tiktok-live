@@ -186,6 +186,17 @@ export const REACTIONS = {
     fx.heartsRise(Math.min(14, 2 + Math.ceil(count / 3)), { x: rand(1580, 1820), y: 1040, spread: 160 });
     if (count >= 10) audio.sfx('heart');
   },
+  /** A viewer who just entered the room walks in and takes their seat (no toast — joins are frequent). */
+  async walk_in(ctx, { user }) {
+    const { stage } = ctx;
+    if (ctx.locked || stage.walkers.size >= 6) return;
+    const seat = stage.seatOf(user.id);
+    const walker = stage.spawnWalker(user, { from: seat && seat.x < 960 ? 'entryLeft' : 'entryRight' });
+    walker.setPose('wave');
+    const dest = seat ? { x: seat.x, y: seat.y + 20 } : { x: rand(500, 1420), y: rand(860, 1000) };
+    await walker.moveTo(dest.x, dest.y, { speed: 420 });
+    stage.removeWalker(walker);
+  },
   async guest_arrival(ctx, { user }) {
     const { stage, ov, audio } = ctx;
     ov.toast({ user, icon: '🎉', title: 'đã đến dự tiệc cưới', detail: 'Khách mời mới' });

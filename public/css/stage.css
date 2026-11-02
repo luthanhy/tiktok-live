@@ -640,28 +640,28 @@ body[data-theme="luxury"] .glass { box-shadow: 0 12px 36px rgba(90, 60, 30, 0.18
    Safe zones on a phone: TikTok's header covers ~0–200px, its chat and gift
    buttons cover the bottom ~420px. So the HUD lives in a top band (210–770),
    the couple is framed large in the middle (scene scaled ×1.3), and nothing
-   important sits at the bottom.
+   important sits at the bottom. The scene is shown at 0.82× so the whole hall (every seat) fits.
    ===================================================================== */
 #stage[data-layout="portrait"] { width: 1080px; height: 1920px; background: radial-gradient(ellipse at 50% 40%, #3a2232 0%, #1d1219 70%); }
 #stage[data-layout="portrait"] #frame {
   inset: auto; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0;
-  transform: translate(-708px, 330px) scale(1.3);
+  transform: translate(-247px, 600px) scale(0.82);
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 90px, #000 calc(100% - 110px), transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0, #000 90px, #000 calc(100% - 110px), transparent 100%);
 }
 /* top bar: couple names + live chip */
-#stage[data-layout="portrait"] .hud-top { left: 24px; top: 206px; width: 1032px; height: 84px; transform: none; padding: 0 20px; }
+#stage[data-layout="portrait"] .hud-top { left: 24px; top: 206px; width: 1032px; height: 70px; transform: none; padding: 0 20px; }
 #stage[data-layout="portrait"] .brand { display: none; }
-#stage[data-layout="portrait"] .couple-names { position: static; transform: none; font-size: 64px; gap: 16px; }
-#stage[data-layout="portrait"] .couple-names i { font-size: 34px; }
-#stage[data-layout="portrait"] .live-chip { font-size: 21px; padding: 11px 18px; }
+#stage[data-layout="portrait"] .couple-names { position: static; transform: none; font-size: 50px; gap: 12px; }
+#stage[data-layout="portrait"] .couple-names i { font-size: 26px; }
+#stage[data-layout="portrait"] .live-chip { font-size: 18px; padding: 9px 15px; }
 /* chapter card (left) and top-5 supporters (right), 1.3× for phone legibility */
-#stage[data-layout="portrait"] .panel { top: 306px; transform: scale(1.3); padding: 12px 14px; }
+#stage[data-layout="portrait"] .panel { top: 288px; transform: scale(1.05); padding: 10px 12px; }
 #stage[data-layout="portrait"] .panel-left { left: 24px; width: 446px; }
-#stage[data-layout="portrait"] .panel-right { right: 24px; width: 330px; }
+#stage[data-layout="portrait"] .panel-right { right: 24px; width: 470px; }
 #stage[data-layout="portrait"] .panel-left .ch-sub, #stage[data-layout="portrait"] .panel-left .obj-hint, #stage[data-layout="portrait"] .panel-left .meters, #stage[data-layout="portrait"] .panel-left .chapter-track { display: none; }
-#stage[data-layout="portrait"] .panel-left { width: 420px; }
-#stage[data-layout="portrait"] .ch-title { font-size: 40px; margin: 2px 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#stage[data-layout="portrait"] .panel-left { width: 470px; }
+#stage[data-layout="portrait"] .ch-title { font-size: 34px; margin: 2px 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #stage[data-layout="portrait"] .objective { margin-bottom: 8px; padding: 9px 12px; }
 #stage[data-layout="portrait"] .happy-meter { margin-bottom: 0; }
 #stage[data-layout="portrait"] .panel-title { font-size: 30px; margin-bottom: 6px; }
@@ -669,33 +669,33 @@ body[data-theme="luxury"] .glass { box-shadow: 0 12px 36px rgba(90, 60, 30, 0.18
 #stage[data-layout="portrait"] .leaderboard li { padding: 2px 8px 2px 3px; }
 #stage[data-layout="portrait"] .leaderboard .who small { display: none; }
 /* community progress across the width, under the panels */
-#stage[data-layout="portrait"] .community-bar { left: 24px; top: 650px; bottom: auto; width: 1032px; height: auto; transform: none; grid-template-columns: 1fr; gap: 10px; padding: 14px 22px 16px; }
+#stage[data-layout="portrait"] .community-bar { left: 24px; top: 552px; bottom: auto; width: 1032px; height: auto; transform: none; grid-template-columns: 1fr 470px; gap: 18px; padding: 10px 20px 12px; }
 #stage[data-layout="portrait"] .how-to { display: none; }
-#stage[data-layout="portrait"] .cb-label { font-size: 17px; margin-bottom: 10px; }
-#stage[data-layout="portrait"] .cb-score { font-size: 30px; }
-#stage[data-layout="portrait"] .bar.journey { height: 22px; }
-#stage[data-layout="portrait"] .ms { width: 38px; height: 38px; font-size: 20px; }
-#stage[data-layout="portrait"] .counters { gap: 10px; }
-#stage[data-layout="portrait"] .counters span { font-size: 24px; }
-#stage[data-layout="portrait"] .counters b { font-size: 26px; }
+#stage[data-layout="portrait"] .cb-label { font-size: 14px; margin-bottom: 8px; }
+#stage[data-layout="portrait"] .cb-score { font-size: 24px; }
+#stage[data-layout="portrait"] .bar.journey { height: 16px; }
+#stage[data-layout="portrait"] .ms { width: 30px; height: 30px; font-size: 16px; }
+#stage[data-layout="portrait"] .counters { gap: 6px; }
+#stage[data-layout="portrait"] .counters span { font-size: 18px; }
+#stage[data-layout="portrait"] .counters b { font-size: 20px; }
 /* TikTok already shows the chat: hide our wish list; gift toasts sit right, under the HUD */
 #stage[data-layout="portrait"] .wishes { display: none; }
-#stage[data-layout="portrait"] #toasts { right: 24px; top: 860px; bottom: auto; width: 400px; flex-direction: column; transform: scale(1.25); transform-origin: top right; }
+#stage[data-layout="portrait"] #toasts { right: 24px; top: 690px; bottom: auto; width: 400px; flex-direction: column; transform: scale(1.05); transform-origin: top right; }
 #stage[data-layout="portrait"] #toasts > :nth-child(n + 3) { display: none; }
-#stage[data-layout="portrait"] .mode-panel { top: 860px; transform: translate(-50%, -20px) scale(1.3); }
-#stage[data-layout="portrait"] .mode-panel.show { transform: translate(-50%, 0) scale(1.3); }
+#stage[data-layout="portrait"] .mode-panel { top: 720px; transform: translate(-50%, -20px) scale(1.05); }
+#stage[data-layout="portrait"] .mode-panel.show { transform: translate(-50%, 0) scale(1.05); }
 /* overlays: keep them inside 1080px and above TikTok's chat */
 #stage[data-layout="portrait"] .chapter-card { top: 44%; width: 1000px; }
 #stage[data-layout="portrait"] .cc-title { font-size: 92px; white-space: normal; }
 #stage[data-layout="portrait"] .mega-title { top: 52%; width: 1000px; white-space: normal; }
 #stage[data-layout="portrait"] .mega-title::before { inset: -80px -40px; }
 #stage[data-layout="portrait"] .mt-title { font-size: 82px; }
-#stage[data-layout="portrait"] .banner { top: 1240px; bottom: auto; }
+#stage[data-layout="portrait"] .banner { top: 1180px; bottom: auto; }
 #stage[data-layout="portrait"] .banner-inner { min-width: 0; width: 1000px; }
 #stage[data-layout="portrait"] .summary-card { width: 1000px; }
 #stage[data-layout="portrait"] .summary-card.compact { top: 66%; }
-#stage[data-layout="portrait"] .ring-closeup { top: 820px; }
-#stage[data-layout="portrait"] .photo-booth { right: 40px; top: 880px; bottom: auto; }
+#stage[data-layout="portrait"] .ring-closeup { top: 720px; }
+#stage[data-layout="portrait"] .photo-booth { right: 40px; top: 760px; bottom: auto; }
 #stage[data-layout="portrait"] .float-layer { display: none; } /* seat bubbles + TikTok chat already show comments */
 #stage[data-layout="portrait"] .letterbox { display: none; }
 
@@ -709,7 +709,7 @@ body[data-theme="luxury"] .glass { box-shadow: 0 12px 36px rgba(90, 60, 30, 0.18
 @keyframes tipFlash { 0%, 100% { box-shadow: var(--shadow); } 40% { box-shadow: 0 0 0 4px var(--rose), 0 0 30px var(--rose); } }
 #stage.cinematic .tip-ticker { opacity: 0.25; }
 /* portrait: right under the HUD band, above the couple, clear of TikTok's chat */
-#stage[data-layout="portrait"] .tip-ticker { top: 812px; bottom: auto; width: 1032px; transform: translateX(-50%); padding: 12px 22px; }
-#stage[data-layout="portrait"] .tt-label { font-size: 17px; padding: 7px 14px; }
-#stage[data-layout="portrait"] .tt-text { font-size: 28px; white-space: normal; }
-#stage[data-layout="portrait"] #toasts { top: 920px; }
+#stage[data-layout="portrait"] .tip-ticker { top: 650px; bottom: auto; width: 1032px; transform: translateX(-50%); padding: 8px 18px; }
+#stage[data-layout="portrait"] .tt-label { font-size: 14px; padding: 6px 12px; }
+#stage[data-layout="portrait"] .tt-text { font-size: 22px; white-space: normal; }
+#stage[data-layout="portrait"] #toasts { top: 720px; }

@@ -366,3 +366,13 @@ test('a quiet room gets MC invitations, spaced out and reset by viewer activity'
   assert.equal(prompts().length, 2);
   assert.notEqual(prompts()[0].payload.text, prompts()[1].payload.text);
 });
+
+test('everyone who enters the room takes a seat and walks in once', () => {
+  const { engine, queue } = makeEngine();
+  for (let i = 0; i < 70; i++) engine.handle({ type: 'join', user: { id: `v${i}`, name: `Khách ${i}` } });
+  engine.handle({ type: 'join', user: { id: 'v69', name: 'Khách 69' } });
+  const s = engine.publicState();
+  assert.equal(s.guests.length, 60, 'the most recent 60 viewers are seated');
+  assert.equal(s.guests[s.guests.length - 1].id, 'v69');
+  assert.equal(queue.items.filter((i) => i.kind === 'walk_in').length, 70, 'a returning viewer does not walk in again');
+});
