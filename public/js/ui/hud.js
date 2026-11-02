@@ -26,9 +26,9 @@ export class Hud {
   build() {
     this.root.querySelector('#hud').innerHTML = `
       <header class="hud-top glass">
-        <div class="brand"><span class="brand-kicker">Wedding Live</span><span class="brand-title">The Big Day</span></div>
+        <div class="brand"><span class="brand-kicker">Đám Cưới Live</span><span class="brand-title">Ngày Chung Đôi</span></div>
         <div class="couple-names"><span data-k="groom"></span><i>♥</i><span data-k="bride"></span></div>
-        <div class="top-right"><span class="mode-chip" data-k="mode-chip"></span><div class="live-chip"><span class="dot"></span><span data-k="live">OFFLINE</span><span data-k="viewers"></span></div></div>
+        <div class="top-right"><span class="mode-chip" data-k="mode-chip"></span><div class="live-chip"><span class="dot"></span><span data-k="live">NGOẠI TUYẾN</span><span data-k="viewers"></span></div></div>
       </header>
 
       <section class="mode-panel glass" data-k="mode-panel"></section>
@@ -43,12 +43,12 @@ export class Hud {
           <div class="obj-hint" data-k="obj-hint"></div>
         </div>
         <div class="meters" data-k="meters"></div>
-        <div class="meter happy-meter"><div class="meter-head"><span>😊 Happiness</span><b data-k="happy-val">0</b></div><div class="bar happy"><i data-k="happy-bar"></i></div></div>
+        <div class="meter happy-meter"><div class="meter-head"><span>😊 Niềm vui</span><b data-k="happy-val">0</b></div><div class="bar happy"><i data-k="happy-bar"></i></div></div>
         <ol class="chapter-track"></ol>
       </aside>
 
       <aside class="panel panel-right glass">
-        <div class="panel-title">Top Wedding Guests</div>
+        <div class="panel-title">Bảng Vàng Khách Quý</div>
         <ol class="leaderboard"></ol>
       </aside>
 
@@ -56,10 +56,10 @@ export class Hud {
 
       <footer class="community-bar glass">
         <div class="how-to">
-          <span><i>❤️</i>Tim<small>+Love</small></span><span><i>➕</i>Follow<small>Khách mời</small></span><span><i>💬</i>Bình luận<small>Lời chúc</small></span><span><i>🔁</i>Share<small>Pháo giấy</small></span><span><i>🎁</i>Quà<small>Nghi lễ</small></span>
+          <span><i>❤️</i>Thả tim<small>+Yêu thương</small></span><span><i>➕</i>Theo dõi<small>Khách mời</small></span><span><i>💬</i>Bình luận<small>Lời chúc</small></span><span><i>🔁</i>Chia sẻ<small>Pháo giấy</small></span><span><i>🎁</i>Quà<small>Nghi lễ</small></span>
         </div>
         <div class="cb-progress">
-          <div class="cb-label"><span>Community Progress</span><span class="cb-score"><b data-k="love">0</b> 💗</span></div>
+          <div class="cb-label"><span>Tiến độ đám cưới</span><span class="cb-score"><b data-k="love">0</b> 💗</span></div>
           <div class="bar journey"><i data-k="journey-bar"></i><div class="milestones" data-k="milestones"></div></div>
         </div>
         <div class="counters">
@@ -86,7 +86,7 @@ export class Hud {
     const chip = this.root.querySelector('.live-chip');
     chip.classList.toggle('on', Boolean(status?.connected));
     chip.classList.toggle('connecting', Boolean(status?.connecting));
-    this.setText('live', status?.connected ? `LIVE @${status.username}` : status?.connecting ? 'CONNECTING…' : 'DEMO');
+    this.setText('live', status?.connected ? `LIVE @${status.username}` : status?.connecting ? 'ĐANG KẾT NỐI…' : 'CHẠY THỬ');
     this.setText('viewers', status?.connected && status.viewerCount ? `👁 ${fmt(status.viewerCount)}` : '');
   }
 
@@ -107,7 +107,7 @@ export class Hud {
   renderChapter(s) {
     const prog = s.progress;
     const cur = prog.current;
-    this.setText('ch-kicker', `Chapter ${cur.order} / ${prog.count}`);
+    this.setText('ch-kicker', `Chương ${cur.order} / ${prog.count}`);
     this.setText('ch-title', cur.title);
     this.setText('ch-sub', cur.subtitle || '');
     const meters = Object.fromEntries((s.meters || []).map((m) => [m.id, m]));
@@ -116,7 +116,7 @@ export class Hud {
     let value;
     let pct;
     if (objId === 'love' || !meters[objId]) {
-      label = prog.next ? `💗 Love → ${prog.next.subtitle}` : '💗 Love Score';
+      label = prog.next ? `💗 Yêu thương → ${prog.next.subtitle}` : '💗 Điểm yêu thương';
       value = prog.next ? `${fmt(Math.max(0, prog.next.threshold - prog.pointsToNext))}/${fmt(prog.next.threshold)}` : fmt(s.love);
       pct = prog.chapterPct;
     } else {
@@ -257,7 +257,7 @@ export class Hud {
         <div class="bar timer"><i style="width:${pct}%"></i></div><div class="mp-note">Đến Grand Finale trước khi hết giờ!</div>`;
     } else if (id === 'gift_battle') {
       html = `<div class="mp-head"><b>⚔️ ${escapeHtml(mode.label)} · Hiệp ${mode.round}</b><span class="mp-timer">${fmtTime(mode.roundRemainingSec)}</span></div>
-        <ol class="mp-top">${(mode.roundTop || []).map((t, i) => `<li>${['🥇', '🥈', '🥉'][i]} ${escapeHtml(shortName(t.name, 12))} <b>${fmt(t.points)}</b></li>`).join('') || '<li>Ai sẽ là Round Champion?</li>'}</ol>`;
+        <ol class="mp-top">${(mode.roundTop || []).map((t, i) => `<li>${['🥇', '🥈', '🥉'][i]} ${escapeHtml(shortName(t.name, 12))} <b>${fmt(t.points)}</b></li>`).join('') || '<li>Ai sẽ là quán quân hiệp này?</li>'}</ol>`;
     } else if (id === 'perfect_wedding') {
       const hearts = Array.from({ length: mode.maxMistakes }, (_, i) => `<span class="${i < mode.maxMistakes - mode.mistakes ? 'on' : 'off'}">💍</span>`).join('');
       html = `<div class="mp-head"><b>✨ ${escapeHtml(mode.label)}</b><span class="mp-timer${mode.chapterRemainingSec < 30 ? ' urgent' : ''}">${fmtTime(mode.chapterRemainingSec)}</span></div>

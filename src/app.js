@@ -30,7 +30,7 @@ const { TikTokLiveManager } = require('./tiktok/connector');
 const { MockSimulator, MOCK_GIFTS } = require('./mock/simulator');
 
 const ROOT = path.join(__dirname, '..');
-const THEMES = ['luxury', 'garden', 'modern', 'fairytale', 'vietnamese'];
+const THEMES = ['vietnamese', 'luxury', 'garden', 'modern', 'fairytale'];
 const log = logger.child('app');
 
 function createApp(options = {}) {
@@ -130,10 +130,13 @@ function createApp(options = {}) {
   });
 
   // ------------------------------------------------------------ RPC
+  // Which Vietnamese voice the stage screen reads with (reported by the stage, shown in the dashboard).
+  const stageVoice = { name: '', reportedAt: 0, spoken: 0, lastLine: '', lastAt: 0, lastError: '' };
   const rpc = new RpcRegistry({ adminToken: options.adminToken ?? process.env.ADMIN_TOKEN, logger: logger.child('rpc') });
   const statusPayload = () => ({
     live: { ...tiktok.status },
     tts: tts ? tts.getStatus() : { ready: false, status: 'disabled' },
+    voice: { ...stageVoice },
     queue: queue.snapshot(),
     antiSpam: antiSpam.stats,
     pipeline: pipeline.snapshot(),
@@ -218,6 +221,21 @@ function createApp(options = {}) {
       if (res.ok) broadcast('tts.play', { text, voice: res.voice, url: res.url });
       return res;
     }, { admin: true })
+    .register('tts.stageVoice', ({ name = '' } = {}) => {
+      stageVoice.name = String(name).slice(0, 80);
+      stageVoice.reportedAt = Date.now();
+      broadcast('tts.voice', { ...stageVoice });
+      return { ...stageVoice };
+    })
+    .register('tts.spoken', ({ text = '', voice = '', error = '' } = {}) => {
+      stageVoice.spoken += error ? 0 : 1;
+      stageVoice.lastLine = String(text).slice(0, 200);
+      stageVoice.lastAt = Date.now();
+      stageVoice.lastError = String(error).slice(0, 60);
+      if (voice) stageVoice.name = String(voice).slice(0, 80);
+      broadcast('tts.voice', { ...stageVoice });
+      return { ok: true };
+    })
     .register('rpc.list', () => rpc.list());
 
   // ------------------------------------------------------------ HTTP

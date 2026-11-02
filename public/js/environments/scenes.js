@@ -120,7 +120,7 @@ function gardenFront(rnd) {
   </svg>`;
 }
 
-function receptionBack(rnd, variantId = 'garden', initials = '&') {
+function receptionBack(rnd, variantId = 'garden') {
   const windows = [380, 700, 1220, 1540]
     .map((x) => `<g transform="translate(${x} 120)"><path d="M-90 420 L-90 90 A90 90 0 0 1 90 90 L90 420 Z" fill="url(#window-eve)"/><path d="M-90 420 L-90 90 A90 90 0 0 1 90 90 L90 420 Z M0 0 L0 420 M-90 220 L90 220" stroke="#efe1cf" stroke-width="8" fill="none"/>
       <path d="M-120 -20 C-100 120 -140 300 -110 440 L-80 440 C-90 300 -70 120 -80 -20 Z" fill="url(#drape)"/><path d="M120 -20 C100 120 140 300 110 440 L80 440 C90 300 70 120 80 -20 Z" fill="url(#drape)"/></g>`)
@@ -138,7 +138,7 @@ function receptionBack(rnd, variantId = 'garden', initials = '&') {
       <rect width="${W}" height="620" fill="url(#hall-wall)"/>
       ${windows}
       <rect x="0" y="560" width="${W}" height="44" fill="#ead8c4"/><rect x="0" y="556" width="${W}" height="6" fill="url(#g-gold)"/>
-      <g transform="translate(960 300)"><circle r="120" fill="url(#pink-glow)" opacity=".7"/>${roseCluster(0, 0, 110, 46, rnd)}${variantId === 'vietnamese' ? doubleHappiness(0, 0, 62, { bg: '#c8102e' }) : `<text y="22" text-anchor="middle" class="monogram-text" font-size="58">${escapeHtml(initials)}</text>`}</g>
+      <g transform="translate(960 300)"><circle r="120" fill="url(#pink-glow)" opacity=".7"/>${roseCluster(0, 0, 110, 46, rnd)}${doubleHappiness(0, 0, 62, { bg: '#c8102e' })}</g>
     </g>
     <g class="L-floor">
       <rect x="0" y="600" width="${W}" height="${H - 600}" fill="url(#marble)"/>${tiles}
@@ -311,7 +311,7 @@ export function buildScenes({ brideName = 'Linh', groomName = 'Minh' } = {}, var
   return {
     garden: {
       id: 'garden',
-      label: 'Wedding Garden',
+      label: 'Rạp cưới',
       build: (seed = 11) => ({ back: venue.back(seeded(seed), true), front: venue.front(seeded(seed + 1)) }),
       depth: depthFn(600, 0.0019),
       seats: gardenSeats,
@@ -334,7 +334,7 @@ export function buildScenes({ brideName = 'Linh', groomName = 'Minh' } = {}, var
     },
     ceremony: {
       id: 'ceremony',
-      label: 'Ceremony Stage',
+      label: 'Lễ đường',
       build: (seed = 23) => ({ back: venue.back(seeded(seed), false), front: venue.front(seeded(seed + 1)) }),
       depth: depthFn(600, 0.0021),
       seats: ceremonySeats,
@@ -358,8 +358,8 @@ export function buildScenes({ brideName = 'Linh', groomName = 'Minh' } = {}, var
     },
     reception: {
       id: 'reception',
-      label: 'Reception Hall',
-      build: (seed = 37) => ({ back: receptionBack(seeded(seed), vid, initials), front: receptionFront(seeded(seed + 1)) }),
+      label: 'Sảnh tiệc',
+      build: (seed = 37) => ({ back: receptionBack(seeded(seed), vid), front: receptionFront(seeded(seed + 1)) }),
       depth: depthFn(600, 0.0019),
       seats: tableSeats,
       tables,
@@ -383,7 +383,7 @@ export function buildScenes({ brideName = 'Linh', groomName = 'Minh' } = {}, var
     },
     dance: {
       id: 'dance',
-      label: 'Dance Floor',
+      label: 'Sân khấu văn nghệ',
       build: (seed = 41) => ({ back: danceBack(seeded(seed), initials, vid), front: danceFront() }),
       depth: depthFn(600, 0.0019),
       seats: danceSpots,
@@ -403,7 +403,7 @@ export function buildScenes({ brideName = 'Linh', groomName = 'Minh' } = {}, var
     },
     grand: {
       id: 'grand',
-      label: 'Grand Celebration Stage',
+      label: 'Sân khấu đại tiệc',
       build: (seed = 53) => ({ back: grandBack(seeded(seed), initials, vid), front: grandFront(seeded(seed + 1)) }),
       depth: depthFn(560, 0.0018),
       seats: grandSpots,
@@ -436,6 +436,6 @@ export function photoBoothSvg(rnd = seeded(77)) {
   return `<svg viewBox="0 0 520 400" class="booth-svg" preserveAspectRatio="xMidYMid slice">
     <rect width="520" height="400" fill="#fbe8ee"/>${wall}
     <rect x="0" y="0" width="520" height="400" fill="#fff" fill-opacity=".18"/>
-    <text x="260" y="70" text-anchor="middle" class="neon-text" font-size="44">Just Married</text>
+    <text x="260" y="70" text-anchor="middle" class="neon-text" font-size="44">Vợ Chồng Son</text>
   </svg>`;
 }

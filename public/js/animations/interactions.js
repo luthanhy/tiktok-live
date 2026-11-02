@@ -100,7 +100,7 @@ export const INTERACTIONS = {
   special_dance: {
     cinematic: true,
     async run({ stage, fx, ov, audio }, { user, gift }) {
-      ov.banner({ kicker: 'Wedding Special', title: `${shortName(user.name, 18)} tặng ${gift.count > 1 ? `${gift.count}× ` : ''}${gift.label}`, sub: 'Phù dâu & phù rể quẩy cực sung! 💃🕺', user, style: 'pink', ms: 4200 });
+      ov.banner({ kicker: 'Quà đặc biệt', title: `${shortName(user.name, 18)} tặng ${gift.count > 1 ? `${gift.count}× ` : ''}${gift.label}`, sub: 'Phù dâu & phù rể quẩy cực sung! 💃🕺', user, style: 'pink', ms: 4200 });
       audio.sfx('fanfare');
       ov.beams(true, { tint: 'pink' });
       const crew = [stage.cast.bm1, stage.cast.bm2, stage.cast.gm1, stage.cast.gm2];
@@ -119,7 +119,7 @@ export const INTERACTIONS = {
   light_show: {
     cinematic: true,
     async run({ fx, ov, audio, stage }, { user, gift }) {
-      ov.banner({ kicker: 'Light Show', title: `${shortName(user.name, 18)} thắp sáng lễ cưới`, sub: gift.label, user, style: 'night', ms: 3800 });
+      ov.banner({ kicker: 'Đêm hội ánh sáng', title: `${shortName(user.name, 18)} thắp sáng lễ cưới`, sub: gift.label, user, style: 'night', ms: 3800 });
       ov.beams(true, { tint: 'rainbow' });
       audio.sfx('chime');
       for (let i = 0; i < 4; i++) {
@@ -136,7 +136,7 @@ export const INTERACTIONS = {
     async run({ fx, ov, audio, stage }, { user, gift }) {
       ov.letterbox(true);
       stage.root.classList.add('dim');
-      ov.banner({ kicker: 'Premium Gift', title: `${shortName(user.name, 18)} — ${gift.label}`, sub: 'Bắn pháo hoa mừng hạnh phúc! 🎆', user, style: 'gold', ms: 5200 });
+      ov.banner({ kicker: 'Quà siêu cấp', title: `${shortName(user.name, 18)} — ${gift.label}`, sub: 'Bắn pháo hoa mừng hạnh phúc! 🎆', user, style: 'gold', ms: 5200 });
       audio.sfx('fanfare');
       for (let i = 0; i < 3; i++) {
         fx.fireworks(5, { delay: 0.25 });
@@ -156,7 +156,7 @@ export const INTERACTIONS = {
     async run({ fx, ov, audio, stage }, { user, gift }) {
       ov.letterbox(true);
       ov.flash('#fff2dc', 900);
-      ov.banner({ kicker: 'Wedding Special Event', title: `${shortName(user.name, 18)} tặng ${gift.label}!`, sub: 'Cả lễ đường bùng nổ ăn mừng! 👑', user, style: 'married', ms: 6000 });
+      ov.banner({ kicker: 'Đại lễ mừng cưới', title: `${shortName(user.name, 18)} tặng ${gift.label}!`, sub: 'Cả lễ đường bùng nổ ăn mừng! 👑', user, style: 'married', ms: 6000 });
       audio.sfx('bells');
       audio.sfx('fanfare');
       ov.beams(true, { tint: 'gold' });
@@ -243,20 +243,20 @@ export const REACTIONS = {
     fx.confettiCannon(pick([-20, 1940]), 980, pick([-60, -120]), 90);
   },
   support_goal({ fx, ov, audio, stage }, { level, bonus }) {
-    ov.banner({ kicker: 'Community Support', title: `Cộng đồng đạt Level ${level}!`, sub: `+${bonus} điểm yêu thương cho cô dâu chú rể`, style: 'pink', ms: 3600 });
+    ov.banner({ kicker: 'Cộng đồng ủng hộ', title: `Cộng đồng đạt cấp ${level}!`, sub: `+${bonus} điểm yêu thương cho cô dâu chú rể`, style: 'pink', ms: 3600 });
     audio.sfx('chime');
     fx.confettiBoth(120);
     stage.guestsReact('cheer');
   },
   happiness_overflow({ fx, ov, audio, stage }, { bonus }) {
-    ov.banner({ kicker: 'Happiness Overflow', title: 'Niềm vui tràn ngập! 😍', sub: `+${bonus} điểm`, style: 'pink', ms: 3600 });
+    ov.banner({ kicker: 'Niềm vui ngập tràn', title: 'Niềm vui tràn ngập! 😍', sub: `+${bonus} điểm`, style: 'pink', ms: 3600 });
     audio.sfx('cheer');
     fx.heartBurst(960, 520, 60, 1.4);
     for (const a of stage.allCast()) a.react('hop', 1000);
     stage.guestsReact('cheer');
   },
   top_supporter({ ov, audio }, { user, points }) {
-    ov.banner({ kicker: 'Top Supporter mới', title: `👑 ${shortName(user.name, 20)}`, sub: `${points.toLocaleString('vi-VN')} điểm yêu thương`, user, style: 'gold', ms: 3000 });
+    ov.banner({ kicker: 'Khách quý số 1 mới', title: `👑 ${shortName(user.name, 20)}`, sub: `${points.toLocaleString('vi-VN')} điểm yêu thương`, user, style: 'gold', ms: 3000 });
     audio.sfx('chime');
   }
 };
@@ -264,7 +264,7 @@ export const REACTIONS = {
 /** Game-mode reactions (see src/gameplay/modes). */
 Object.assign(REACTIONS, {
   team_join({ ov, audio, stage }, { user, team, label }) {
-    ov.toast({ user, icon: team === 'bride' ? '👰' : '🤵', title: `gia nhập ${label}`, detail: 'Bride vs Groom' });
+    ov.toast({ user, icon: team === 'bride' ? '👰' : '🤵', title: `gia nhập ${label}`, detail: 'Nhà gái đấu nhà trai' });
     audio.sfx('pop');
     (team === 'bride' ? stage.cast.bride : stage.cast.groom).react('hop', 900);
   },
@@ -282,7 +282,7 @@ Object.assign(REACTIONS, {
     fx.confettiBoth(120);
     stage.guestsReact('cheer');
     if (champion) {
-      ov.banner({ kicker: `Round ${round} Champion`, title: `👑 ${shortName(champion.name, 20)}`, sub: `${champion.points.toLocaleString('vi-VN')} điểm · +${bonus} cho cô dâu chú rể`, user: champion, style: 'gold', ms: 4000 });
+      ov.banner({ kicker: `Quán quân hiệp ${round}`, title: `👑 ${shortName(champion.name, 20)}`, sub: `${champion.points.toLocaleString('vi-VN')} điểm · +${bonus} cho cô dâu chú rể`, user: champion, style: 'gold', ms: 4000 });
     } else {
       ov.banner({ kicker: `Kết thúc hiệp ${round}`, title: team ? `${label} thắng hiệp!` : 'Hòa nhau!', sub: bonus ? `+${bonus} điểm yêu thương` : '', style: team === 'bride' ? 'pink' : 'gold', ms: 3600 });
     }
@@ -298,7 +298,7 @@ Object.assign(REACTIONS, {
       stage.root.classList.add('dim');
       setTimeout(() => stage.root.classList.remove('dim'), 6000);
     }
-    ov.megaTitle({ kicker: success ? 'Mission Complete' : 'Game Over', title, sub: detail || '', style: success ? 'gold' : 'fail', ms: 6000 });
+    ov.megaTitle({ kicker: success ? 'Hoàn thành nhiệm vụ' : 'Kết thúc', title, sub: detail || '', style: success ? 'gold' : 'fail', ms: 6000 });
   },
   mode_mistake({ ov, audio, stage }, { mistakes, max, title }) {
     audio.sfx('fail');

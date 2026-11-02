@@ -9,7 +9,7 @@ class WeddingRushMode extends GameMode {
     return 'wedding_rush';
   }
   static get label() {
-    return 'Wedding Rush';
+    return 'Kịp giờ lành';
   }
   static get description() {
     return 'Hoàn thành đám cưới trước khi hết giờ!';

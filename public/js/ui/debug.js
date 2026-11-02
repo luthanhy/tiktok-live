@@ -33,7 +33,7 @@ export class DebugPanel {
     this.el = document.createElement('aside');
     this.el.id = 'debug-panel';
     this.el.innerHTML = `
-      <header><b>🛠 Debug</b><span class="dbg-fps"></span><button data-dbg="close" title="Ẩn (Ctrl+Shift+D)">✕</button></header>
+      <header><b>🛠 Gỡ lỗi</b><span class="dbg-fps"></span><button data-dbg="close" title="Ẩn (Ctrl+Shift+D)">✕</button></header>
       <div class="dbg-body"></div>
       <div class="dbg-actions">
         <div class="row"><span>Event</span>
@@ -95,7 +95,7 @@ export class DebugPanel {
     if (b.dataset.ev) return this.call('mock.event', JSON.parse(b.dataset.ev));
     if (b.dataset.rate) return this.call('mock.rate', { eventsPerSec: Number(b.dataset.rate), durationSec: 10 });
     if (b.dataset.rpc) {
-      if (b.dataset.confirm && !confirm('Reset toàn bộ đám cưới?')) return;
+      if (b.dataset.confirm && !confirm('Làm lại toàn bộ đám cưới?')) return;
       return this.call(b.dataset.rpc, b.dataset.p ? JSON.parse(b.dataset.p) : {});
     }
   }

@@ -12,7 +12,7 @@ class ClassicMode extends GameMode {
     return 'classic';
   }
   static get label() {
-    return 'Classic Wedding';
+    return 'Đám cưới truyền thống';
   }
   static get description() {
     return 'Cả cộng đồng cùng tổ chức đám cưới qua 7 chương.';

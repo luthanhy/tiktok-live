@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wedding Live – The Big Day</title>
-  <meta name="description" content="TikTok Live interactive wedding — viewers celebrate the big day with gifts, likes, comments, follows and shares." />
+  <title>Đám Cưới Live – Ngày Chung Đôi</title>
+  <meta name="description" content="Đám cưới tương tác trên TikTok LIVE — người xem cùng tổ chức ngày vui bằng quà tặng, thả tim, bình luận, theo dõi và chia sẻ." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,13 +13,15 @@
 </head>
 <body>
   <main id="stage" data-scene="garden">
-    <div id="world">
-      <div id="scene-back"></div>
-      <div id="cast"></div>
-      <div id="scene-front"></div>
-      <div id="world-ui"></div>
+    <div id="frame">
+      <div id="world">
+        <div id="scene-back"></div>
+        <div id="cast"></div>
+        <div id="scene-front"></div>
+        <div id="world-ui"></div>
+      </div>
+      <canvas id="fx" width="1920" height="1080"></canvas>
     </div>
-    <canvas id="fx" width="1920" height="1080"></canvas>
     <div id="overlays"></div>
     <div id="hud"></div>
     <div id="toasts"></div>
@@ -28,24 +30,24 @@
 
   <button id="unlock-audio" type="button">🔊 Bấm để bật nhạc cưới &amp; âm thanh</button>
 
-  <nav id="controls" aria-label="Demo controls">
+  <nav id="controls" aria-label="Nút chạy thử">
     <button id="btn-hide" type="button" title="Thu gọn">☰</button>
-    <span class="ctl-title">Mock TikTok</span>
-    <button type="button" data-mock="mock.event" data-params='{"type":"like","count":20}'>💗 Like</button>
-    <button type="button" data-mock="mock.event" data-params='{"type":"follow"}'>➕ Follow</button>
-    <button type="button" data-mock="mock.event" data-params='{"type":"comment"}'>💬 Comment</button>
-    <button type="button" data-mock="mock.event" data-params='{"type":"share"}'>🔁 Share</button>
-    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Rose","count":5}'>🌹 Rose</button>
-    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Heart Me"}'>❤️ Heart</button>
-    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Perfume"}'>🌸 Perfume</button>
-    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Hand Wave"}'>💎 Big gift</button>
-    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Universe"}'>👑 Premium</button>
+    <span class="ctl-title">Chạy thử</span>
+    <button type="button" data-mock="mock.event" data-params='{"type":"like","count":20}'>💗 Thả tim</button>
+    <button type="button" data-mock="mock.event" data-params='{"type":"follow"}'>➕ Theo dõi</button>
+    <button type="button" data-mock="mock.event" data-params='{"type":"comment"}'>💬 Bình luận</button>
+    <button type="button" data-mock="mock.event" data-params='{"type":"share"}'>🔁 Chia sẻ</button>
+    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Rose","count":5}'>🌹 Hoa hồng</button>
+    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Heart Me"}'>❤️ Trái tim</button>
+    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Perfume"}'>🌸 Nước hoa</button>
+    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Hand Wave"}'>💎 Quà lớn</button>
+    <button type="button" data-mock="mock.event" data-params='{"type":"gift","gift":"Universe"}'>👑 Siêu cấp</button>
     <button type="button" data-mock="mock.rate" data-params='{"eventsPerSec":10,"durationSec":15}'>⚡ 10/s</button>
     <button type="button" data-mock="mock.rate" data-params='{"eventsPerSec":100,"durationSec":10}'>⚡ 100/s</button>
     <button type="button" data-mock="mock.rate" data-params='{"eventsPerSec":1000,"durationSec":5}'>⚡ 1000/s</button>
-    <button type="button" data-mock="wedding.nextChapter">⏭ Chapter</button>
+    <button type="button" data-mock="wedding.nextChapter">⏭ Chương sau</button>
     <button id="btn-debug" type="button" title="Ctrl+Shift+D">🛠 Debug</button>
-    <a href="/admin" target="_blank" rel="noopener">🎛 Admin</a>
+    <a href="/admin" target="_blank" rel="noopener">🎛 Quản lý</a>
     <button id="btn-fullscreen" type="button">⛶</button>
   </nav>
 

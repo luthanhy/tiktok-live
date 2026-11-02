@@ -273,20 +273,17 @@ export function vietFront(rnd) {
   </svg>`;
 }
 
-/** Variant-specific extras layered onto the shared reception / dance / grand builders. */
+/** Extras layered onto the shared reception / dance / grand builders: red lanterns in every style (all are Vietnamese). */
 export function venueExtras(variantId, scene) {
-  if (variantId === 'vietnamese') {
-    if (scene === 'reception') return [300, 620, 1300, 1620].map((x, k) => lantern(x, 120 + (k % 2) * 30, 1)).join('');
-    if (scene === 'dance') return [200, 520, 1400, 1720].map((x) => lantern(x, 140, 1.1)).join('');
-    if (scene === 'grand') return [240, 420, 1500, 1680].map((x, k) => lantern(x, 180 + (k % 2) * 40, 1.2)).join('');
-  }
-  if (variantId === 'fairytale' && scene === 'grand') {
-    return `<g filter="url(#far-blur)" opacity=".8" transform="translate(960 0)"><rect x="-500" y="380" width="1000" height="200" fill="#2a2458"/>${[-420, -240, 240, 420].map((tx) => `<rect x="${tx - 30}" y="250" width="60" height="330" fill="#2a2458"/><path d="M${tx - 40} 250 L${tx} 150 L${tx + 40} 250 Z" fill="#1d1846"/>`).join('')}</g>`;
-  }
+  const lanterns =
+    scene === 'reception' ? [300, 620, 1300, 1620].map((x, k) => lantern(x, 120 + (k % 2) * 30, 1)).join('')
+    : scene === 'dance' ? [200, 520, 1400, 1720].map((x) => lantern(x, 140, 1.1)).join('')
+    : scene === 'grand' ? [240, 420, 1500, 1680].map((x, k) => lantern(x, 180 + (k % 2) * 40, 1.2)).join('')
+    : '';
   if (variantId === 'modern' && (scene === 'reception' || scene === 'grand')) {
-    return [360, 960, 1560].map((x) => `<rect x="${x - 160}" y="${scene === 'grand' ? 60 : 210}" width="320" height="6" rx="3" fill="#f7e8c0"/><rect x="${x - 160}" y="${scene === 'grand' ? 54 : 204}" width="320" height="18" rx="6" fill="url(#warm-glow)" opacity=".8"/>`).join('');
+    return lanterns + [360, 960, 1560].map((x) => `<rect x="${x - 160}" y="${scene === 'grand' ? 60 : 210}" width="320" height="6" rx="3" fill="#f7e8c0"/><rect x="${x - 160}" y="${scene === 'grand' ? 54 : 204}" width="320" height="18" rx="6" fill="url(#warm-glow)" opacity=".8"/>`).join('');
   }
-  return '';
+  return lanterns;
 }
 
 export { cypress };

@@ -2,8 +2,8 @@
   "couple": {
     "brideName": "Linh",
     "groomName": "Minh",
-    "weddingTitle": "WEDDING LIVE – THE BIG DAY",
-    "hashtag": "#TheBigDay"
+    "weddingTitle": "ĐÁM CƯỚI LIVE – NGÀY VUI CHUNG ĐÔI",
+    "hashtag": "#ĐámCướiLive"
   },
   "tiktok": {
     "username": "",
@@ -16,17 +16,17 @@
       {
         "id": "preparation",
         "order": 1,
-        "title": "Wedding Preparation",
-        "subtitle": "Chuẩn bị lễ cưới",
+        "title": "Chuẩn Bị Đám Cưới",
+        "subtitle": "Nhà trai sửa soạn mâm quả",
         "scene": "garden",
         "threshold": 0,
         "minDurationSec": 20,
-        "music": "prelude",
+        "music": "vn_prelude",
         "enterSfx": [
           "chime"
         ],
-        "narration": "Khu vườn đang được trang hoàng. Chú rể đã chờ dưới cổng hoa, các vị khách đầu tiên đang đến!",
-        "goalHint": "Thả tim, follow & tặng hoa để trang trí lễ đường",
+        "narration": "Rạp cưới đang được trang hoàng, mâm quả đã sẵn sàng. Chú rể hồi hộp chờ giờ lành, họ hàng và bạn bè đang tới!",
+        "goalHint": "Thả tim, follow và tặng hoa để trang trí rạp cưới",
         "reward": {
           "happiness": 10
         },
@@ -41,17 +41,17 @@
       {
         "id": "bride_entrance",
         "order": 2,
-        "title": "The Bride's Entrance",
-        "subtitle": "Cô dâu tiến vào lễ đường",
+        "title": "Rước Dâu",
+        "subtitle": "Nhà trai rước cô dâu",
         "scene": "ceremony",
         "threshold": 1000,
         "minDurationSec": 25,
-        "music": "bridal_chorus",
+        "music": "vn_ruoc_dau",
         "enterSfx": [
           "bells",
           "applause"
         ],
-        "narration": "Cổng hoa đã mở! Cô dâu đang bước vào lễ đường giữa mưa cánh hoa hồng.",
+        "narration": "Giờ lành đã tới! Nhà trai sang rước dâu, cô dâu trong tà áo dài đỏ bước ra giữa mưa cánh hoa.",
         "goalHint": "Cổ vũ cô dâu — mỗi bông hồng là một lời chúc phúc",
         "reward": {
           "happiness": 15
@@ -65,16 +65,16 @@
       {
         "id": "ceremony",
         "order": 3,
-        "title": "The Wedding Ceremony",
-        "subtitle": "Nghi thức thành hôn",
+        "title": "Lễ Gia Tiên",
+        "subtitle": "Thắp hương báo cáo tổ tiên",
         "scene": "ceremony",
         "threshold": 3000,
         "minDurationSec": 25,
-        "music": "piano_romance",
+        "music": "vn_gia_tien",
         "enterSfx": [
           "chime"
         ],
-        "narration": "MC bắt đầu nghi thức. Cô dâu và chú rể nắm tay nhau, trao lời thề nguyện trọn đời.",
+        "narration": "Cô dâu chú rể thắp nén hương thơm trước bàn thờ gia tiên, xin ông bà tổ tiên chứng giám cho duyên lành.",
         "goalHint": "Gửi lời chúc để cùng chứng giám lời thề",
         "reward": {
           "happiness": 10
@@ -88,18 +88,18 @@
       {
         "id": "ring_exchange",
         "order": 4,
-        "title": "Ring Exchange",
-        "subtitle": "Trao nhẫn cưới",
+        "title": "Trao Nhẫn Cưới",
+        "subtitle": "Trao nhẫn trước họ hàng",
         "scene": "ceremony",
         "threshold": 6000,
         "minDurationSec": 20,
-        "music": "piano_romance",
+        "music": "vn_tinh_ca",
         "enterSfx": [
           "sparkle",
           "chime"
         ],
-        "narration": "Hộp nhẫn đã sẵn sàng… Hãy tặng quà để cặp nhẫn cưới được trao!",
-        "goalHint": "Tặng quà để lấp đầy Ring Meter — nhẫn cưới sẽ được trao!",
+        "narration": "Hộp nhẫn cưới đã sẵn sàng… Cả nhà tặng quà để đôi uyên ương trao nhẫn cho nhau nhé!",
+        "goalHint": "Tặng quà để lấp đầy thanh Nhẫn cưới — nhẫn sẽ được trao!",
         "reward": {
           "happiness": 15
         },
@@ -114,19 +114,19 @@
       {
         "id": "kiss",
         "order": 5,
-        "title": "The Wedding Kiss",
+        "title": "Nên Duyên Vợ Chồng",
         "subtitle": "Nụ hôn hạnh phúc",
         "scene": "ceremony",
         "threshold": 10000,
         "minDurationSec": 25,
-        "music": "wedding_march",
+        "music": "vn_hon_le",
         "enterSfx": [
           "bells",
           "cheer",
           "fireworks"
         ],
-        "narration": "Và bây giờ… chú rể có thể hôn cô dâu! Chúc mừng đôi vợ chồng mới cưới!",
-        "goalHint": "Cùng mở tiệc cưới linh đình",
+        "narration": "Hai họ đã thuận, giờ chú rể có thể hôn cô dâu! Chúc mừng đôi vợ chồng son!",
+        "goalHint": "Cùng mở tiệc cưới thật linh đình",
         "reward": {
           "happiness": 25
         },
@@ -141,18 +141,18 @@
       {
         "id": "reception",
         "order": 6,
-        "title": "Wedding Reception",
-        "subtitle": "Tiệc cưới & khiêu vũ",
+        "title": "Tiệc Cưới",
+        "subtitle": "Cắt bánh, rót rượu, văn nghệ",
         "scene": "reception",
         "threshold": 16000,
         "minDurationSec": 40,
-        "music": "waltz",
+        "music": "vn_celebration",
         "enterSfx": [
           "champagne",
           "cheer"
         ],
-        "narration": "Tiệc cưới bắt đầu! Cắt bánh, rót champagne và bước ra sàn nhảy nào!",
-        "goalHint": "Bánh cưới · Champagne · Sàn nhảy — mỗi thanh đầy là một màn ăn mừng",
+        "narration": "Tiệc cưới bắt đầu! Cắt bánh, rót tháp rượu mừng, rồi cả nhà cùng lên sân khấu văn nghệ nào!",
+        "goalHint": "Bánh cưới · Rượu mừng · Văn nghệ — mỗi thanh đầy là một màn ăn mừng",
         "reward": {
           "happiness": 20
         },
@@ -170,19 +170,19 @@
       {
         "id": "finale",
         "order": 7,
-        "title": "Forever Together",
-        "subtitle": "Đại tiệc hạnh phúc",
+        "title": "Trăm Năm Hạnh Phúc",
+        "subtitle": "Chào bàn và cảm ơn quan khách",
         "scene": "grand",
         "threshold": 25000,
         "minDurationSec": 30,
-        "music": "finale",
+        "music": "vn_tram_nam",
         "enterSfx": [
           "fireworks",
           "cheer",
           "bells"
         ],
-        "narration": "Cảm ơn tất cả khách mời đã cùng tổ chức đám cưới tuyệt vời này. Hạnh phúc trọn đời!",
-        "goalHint": "Mãi mãi bên nhau",
+        "narration": "Cô dâu chú rể đi chào bàn, cảm ơn quan khách hai họ đã tới chung vui. Chúc đôi uyên ương trăm năm hạnh phúc, đầu bạc răng long!",
+        "goalHint": "Bách niên giai lão",
         "reward": {
           "happiness": 30
         },
@@ -222,7 +222,7 @@
   },
   "meters": {
     "happiness": {
-      "label": "Happiness",
+      "label": "Niềm vui",
       "icon": "😊",
       "max": 100,
       "initial": 35,
@@ -242,7 +242,7 @@
       }
     },
     "support": {
-      "label": "Community Support",
+      "label": "Cộng đồng ủng hộ",
       "icon": "🤝",
       "max": 500,
       "globalMeter": true,
@@ -283,7 +283,7 @@
       }
     },
     "ring": {
-      "label": "Ring Meter",
+      "label": "Nhẫn cưới",
       "icon": "💍",
       "max": 1500,
       "sources": {
@@ -320,8 +320,8 @@
       }
     },
     "champagne": {
-      "label": "Champagne",
-      "icon": "🥂",
+      "label": "Rượu mừng",
+      "icon": "🍶",
       "max": 800,
       "sources": {
         "like": 0.3,
@@ -341,8 +341,8 @@
       }
     },
     "dance": {
-      "label": "Sàn nhảy",
-      "icon": "💃",
+      "label": "Văn nghệ",
+      "icon": "🎤",
       "max": 800,
       "sources": {
         "like": 0.8,
@@ -362,7 +362,7 @@
       }
     },
     "celebration": {
-      "label": "Celebration",
+      "label": "Pháo hoa mừng",
       "icon": "🎆",
       "max": 1200,
       "sources": {
@@ -457,8 +457,7 @@
     ],
     "defaultAction": "wish",
     "readAloud": {
-      "mode": "all",
-      "minGapMs": 2500
+      "mode": "all"
     }
   },
   "effects": {
@@ -485,14 +484,16 @@
     "sfxVolume": 0.8,
     "ttsVolume": 0.95,
     "masterVolume": 0.9,
-    "muted": false
+    "muted": false,
+    "musicUrl": "https://cdn.songhy.online/happyweddingday/Nha%CC%A3c%20%C4%90a%CC%81m%20Cu%CC%9Bo%CC%9B%CC%81i%20Vie%CC%A3%CC%82t%20Nam%20Giao%20Hu%CC%9Bo%CC%9B%CC%89ng%20Ta%CC%82n%20Tho%CC%9B%CC%80i%20Full.mp3",
+    "ttsGender": "female"
   },
   "mock": {
     "autoSim": false,
     "intervalMs": 2500
   },
   "theme": {
-    "variant": "luxury"
+    "variant": "vietnamese"
   },
   "mode": {
     "active": "classic"
@@ -565,5 +566,15 @@
   },
   "debug": {
     "enabled": true
+  },
+  "locale": "vi",
+  "announcer": {
+    "enabled": true,
+    "minGapMs": 2500,
+    "gifts": true,
+    "follows": true,
+    "shares": true,
+    "joins": true,
+    "joinGapMs": 20000
   }
 }

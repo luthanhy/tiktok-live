@@ -54,7 +54,12 @@ class ConfigStore {
     const base = JSON.parse(JSON.stringify(this.defaults[name]));
     if (!file || !fs.existsSync(file)) return base;
     try {
-      return deepMerge(base, readJson(file));
+      const override = readJson(file);
+      if (name === 'wedding' && migrateToVietnamese(override, this.defaults.wedding)) {
+        fs.writeFileSync(file, JSON.stringify(override, null, 2), 'utf8');
+        logger.info('Saved wedding config migrated to the Vietnamese storyline');
+      }
+      return deepMerge(base, override);
     } catch (err) {
       logger.warn(`Override ${file} unreadable, using defaults: ${err.message}`);
       return base;
@@ -107,6 +112,30 @@ class ConfigStore {
   }
 }
 
+const LEGACY_EN = new Set(['WEDDING LIVE – THE BIG DAY', '#TheBigDay', 'Happiness', 'Community Support', 'Ring Meter', 'Champagne', 'Sàn nhảy', 'Celebration']);
+
+/**
+ * Overrides saved before the Vietnamese edition (no `locale: 'vi'`) still carry the old
+ * English chapter titles, Western music and the European default theme. Bring their
+ * story text, music and labels to the Vietnamese defaults; keep thresholds, timings and
+ * everything else the streamer tuned. Returns true when the override changed.
+ */
+function migrateToVietnamese(override, defaults) {
+  if (!isPlainObject(override) || override.locale === 'vi') return false;
+  const byId = new Map(defaults.storyline.chapters.map((c) => [c.id, c]));
+  for (const ch of override.storyline?.chapters || []) {
+    const d = byId.get(ch.id);
+    if (d) for (const k of ['title', 'subtitle', 'narration', 'goalHint', 'music']) ch[k] = d[k];
+  }
+  for (const [id, m] of Object.entries(override.meters || {})) {
+    if (LEGACY_EN.has(m?.label) && defaults.meters[id]) Object.assign(m, { label: defaults.meters[id].label, icon: defaults.meters[id].icon });
+  }
+  if (override.couple) for (const k of ['weddingTitle', 'hashtag']) if (LEGACY_EN.has(override.couple[k])) override.couple[k] = defaults.couple[k];
+  if (override.theme?.variant === 'luxury') override.theme.variant = defaults.theme.variant;
+  override.locale = 'vi';
+  return true;
+}
+
 function validateWedding(cfg) {
   const chapters = cfg?.storyline?.chapters;
   if (!Array.isArray(chapters) || chapters.length === 0) {
@@ -135,4 +164,4 @@ function validateGifts(cfg) {
   }
 }
 
-module.exports = { ConfigStore, deepMerge };
+module.exports = { ConfigStore, deepMerge, migrateToVietnamese };

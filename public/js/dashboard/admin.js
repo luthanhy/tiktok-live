@@ -12,14 +12,17 @@ const SCENE_NAMES = ['garden', 'ceremony', 'reception', 'dance', 'grand'];
 const RARITIES = ['common', 'rare', 'epic', 'legendary'];
 const SOUNDS = ['gift', 'heart', 'sparkle', 'chime', 'fanfare', 'bells', 'champagne', 'pop', 'impact'];
 const THEMES = [
-  ['luxury', 'A · Luxury European', 'Ballroom, champagne gold, crystal chandeliers'],
-  ['garden', 'B · Romantic Garden', 'Sunset garden, pink flowers, fairy lights'],
-  ['modern', 'C · Modern Wedding', 'Black · white · gold, minimal architecture'],
-  ['fairytale', 'D · Fairytale', 'Castle, glowing flowers, stars, magic'],
-  ['vietnamese', 'E · Vietnamese Modern', 'Áo dài, cổng hoa, đèn lồng, Song Hỷ']
+  ['vietnamese', 'A · Truyền thống đỏ – vàng', 'Áo dài đỏ, khăn đóng, cổng Song Hỷ, đèn lồng, mâm quả'],
+  ['luxury', 'B · Sang trọng trắng – vàng', 'Áo dài cưới trắng thêu vàng, sảnh tiệc nhà hàng'],
+  ['garden', 'C · Sân vườn miền Tây', 'Áo dài hồng, rạp cưới sân vườn xanh mát'],
+  ['modern', 'D · Hiện đại Sài Gòn', 'Áo dài trắng – đen, sảnh tối hiện đại, đèn vàng'],
+  ['fairytale', 'E · Cung đình Huế', 'Áo dài vàng hoàng gia, sắc vàng – đỏ cung đình']
 ];
-const EFFECT_LABELS = { petals: '🌸 Cánh hoa', hearts: '💗 Tim bay', confetti: '🎊 Pháo giấy', fireworks: '🎆 Pháo hoa', sparkles: '✨ Lấp lánh', lightBeams: '🔦 Tia sáng', cinematicTransitions: '🎬 Letterbox điện ảnh', cameraShake: '📳 Rung camera', floatingWishes: '💌 Lời chúc bay', giftExplosions: '💥 Nổ quà', commentSpawns: '🦤 Bình luận gọi con vật/đồ vật', commentBubbles: '💬 Bong bóng thoại trên khách' };
-const AUDIO_LABELS = { musicEnabled: '🎼 Nhạc nền', sfxEnabled: '🔔 Hiệu ứng âm thanh', ttsEnabled: '🎙 Giọng MC (TTS)', muted: '🔇 Tắt tiếng tất cả' };
+const EFFECT_LABELS = { petals: '🌸 Cánh hoa', hearts: '💗 Tim bay', confetti: '🎊 Pháo giấy', fireworks: '🎆 Pháo hoa', sparkles: '✨ Lấp lánh', lightBeams: '🔦 Tia sáng', cinematicTransitions: '🎬 Khung điện ảnh', cameraShake: '📳 Rung khung hình', floatingWishes: '💌 Lời chúc bay', giftExplosions: '💥 Nổ quà', commentSpawns: '🦤 Bình luận gọi con vật/đồ vật', commentBubbles: '💬 Bong bóng thoại trên khách' };
+const MANUAL_LABELS = { petals: '🌸 Mưa cánh hoa', hearts: '💗 Tim bay', confetti: '🎊 Pháo giấy', fireworks: '🎆 Pháo hoa', explosion: '💥 Nổ quà', shake: '📳 Rung', sparkles: '✨ Lấp lánh', beams: '🔦 Đèn sân khấu', bells: '🔔 Chuông', applause: '👏 Vỗ tay', cheer: '🙌 Reo hò', flash: '📸 Đèn flash' };
+// Only the Vietnamese score is offered (the show is Vietnamese-only).
+const VN_TRACKS = Object.entries(TRACK_LABELS).filter(([k]) => k.startsWith('vn_'));
+const AUDIO_LABELS = { musicEnabled: '🎼 Nhạc nền', sfxEnabled: '🔔 Hiệu ứng âm thanh', ttsEnabled: '🎙 Giọng MC đọc tiếng Việt', muted: '🔇 Tắt tiếng tất cả' };
 
 const tokenInput = $('#admin-token');
 try {
@@ -31,7 +34,7 @@ tokenInput.addEventListener('change', () => {
   try {
     localStorage.setItem('wedding_admin_token', net.token);
   } catch (_) {}
-  toast('Đã lưu token');
+  toast('Đã lưu mã quản trị');
 });
 
 let config = null;
@@ -95,13 +98,13 @@ function renderState(s) {
     ['🌹', 'Hoa', c.flowers],
     ['🎁', 'Quà', c.gifts],
     ['💎', 'Kim cương', c.diamonds],
-    ['💗', 'Like', c.likes],
+    ['💗', 'Thả tim', c.likes],
     ['💬', 'Bình luận', c.comments],
     ['💌', 'Lời chúc', c.wishes],
-    ['🔁', 'Share', c.shares],
-    ['➕', 'Follow', c.follows],
+    ['🔁', 'Chia sẻ', c.shares],
+    ['➕', 'Theo dõi', c.follows],
     ['📸', 'Ảnh', c.photos],
-    ['🤝', `Support Lv.${s.support.level}`, `${Math.round(s.support.pct)}%`]
+    ['🤝', `Ủng hộ cấp ${s.support.level}`, `${Math.round(s.support.pct)}%`]
   ]
     .map(([i, l, v]) => `<div><span>${i}</span><b>${typeof v === 'number' ? fmt(v) : v}</b><small>${l}</small></div>`)
     .join('');
@@ -123,32 +126,33 @@ function renderStatus(st) {
   const q = st.queue;
   $('#pipeline-kv').innerHTML = kv({
     'Hàng đợi': `${q.size} (đã phát ${fmt(q.dispatched)}, gộp ${fmt(q.coalesced)}, bỏ ${fmt(q.dropped)})`,
-    'Anti-spam': `${fmt(st.antiSpam.accepted)} nhận · ${fmt(st.antiSpam.rejected)} chặn`,
+    'Chống spam': `${fmt(st.antiSpam.accepted)} nhận · ${fmt(st.antiSpam.rejected)} chặn`,
     'Lý do chặn': Object.entries(st.antiSpam.reasons).map(([k, v]) => `${k}: ${v}`).join(', ') || '—',
     'Màn hình đang mở': st.clients,
-    'Mock auto': st.mock.running ? `Bật (${st.mock.intervalMs}ms)` : 'Tắt',
-    Uptime: `${Math.round(st.uptimeSec / 60)} phút`
+    'Mô phỏng tự động': st.mock.running ? `Bật (${st.mock.intervalMs}ms)` : 'Tắt',
+    'Đã chạy': `${Math.round(st.uptimeSec / 60)} phút`
   });
   $('#auto-sim').checked = st.mock.running;
   renderLive(st.live);
+  if (st.voice) stageVoice = st.voice;
   renderTts(st.tts);
   const pl = st.pipeline;
   $('#rate-kv').innerHTML = kv({
     'Tốc độ': `${pl.ratePerSec} sự kiện/giây`,
     'Đã nhận': `${fmt(pl.received)} (${Object.entries(pl.byType).map(([k, v]) => `${k} ${fmt(v)}`).join(' · ') || '—'})`,
-    'Like đã gộp': fmt(pl.batchedLikes),
+    'Thả tim đã gộp': fmt(pl.batchedLikes),
     'Sự kiện cuối': pl.lastEvent ? `${pl.lastEvent.type} · ${pl.lastEvent.user} ×${pl.lastEvent.amount} (${pl.lastEvent.source}) · ${new Date(pl.lastEvent.at).toLocaleTimeString('vi-VN')}` : '—',
-    'Mock rate': st.mock.rate ? `${st.mock.rate.eventsPerSec}/s · còn ${st.mock.rate.remainingSec}s` : 'tắt',
+    'Mô phỏng tốc độ': st.mock.rate ? `${st.mock.rate.eventsPerSec}/s · còn ${st.mock.rate.remainingSec}s` : 'tắt',
     'Bộ nhớ server': `${st.memory.rssMb} MB`
   });
 }
 
 function renderLive(l) {
-  pill('#live-pill', l.connected ? `LIVE @${l.username}` : l.connecting ? 'Đang kết nối…' : 'TikTok offline', l.connected ? 'ok' : l.connecting ? 'warn' : 'bad');
+  pill('#live-pill', l.connected ? `LIVE @${l.username}` : l.connecting ? 'Đang kết nối…' : 'TikTok chưa kết nối', l.connected ? 'ok' : l.connecting ? 'warn' : 'bad');
   $('#live-kv').innerHTML = kv({
     'Trạng thái': l.connected ? '🟢 Đã kết nối' : l.connecting ? '🟡 Đang kết nối' : '⚪ Chưa kết nối',
     'Tài khoản': l.username ? `@${l.username}` : '—',
-    'Room ID': l.roomId || '—',
+    'Mã phòng live': l.roomId || '—',
     'Người xem': fmt(l.viewerCount || 0),
     'Sự kiện nhận': fmt(l.eventsReceived || 0),
     'Kết nối lúc': l.connectedAt ? new Date(l.connectedAt).toLocaleTimeString('vi-VN') : '—',
@@ -156,8 +160,18 @@ function renderLive(l) {
   });
 }
 
-function renderTts(t) {
-  pill('#tts-pill', t.ready ? 'ZeroTTS sẵn sàng' : `TTS: ${t.status} (dùng giọng trình duyệt)`, t.ready ? 'ok' : 'warn');
+let stageVoice = { name: '', reportedAt: 0 };
+let ttsStatus = { ready: false };
+function renderTts(t = ttsStatus) {
+  ttsStatus = t;
+  if (t.ready) return pill('#tts-pill', 'Giọng đọc: ZeroTTS tiếng Việt', 'ok');
+  if (stageVoice.name) {
+    const short = stageVoice.name.replace(/^Microsofts+/i, '').replace(/s+Online.*$/i, '');
+    pill('#tts-pill', `Giọng đọc: ${short}${stageVoice.spoken ? ` · đã đọc ${stageVoice.spoken} câu` : ''}`, stageVoice.lastError ? 'warn' : 'ok');
+    $('#tts-pill').title = stageVoice.lastLine ? `Vừa đọc: ${stageVoice.lastLine}` : '';
+    return;
+  }
+  pill('#tts-pill', stageVoice.reportedAt ? '⚠ Không có giọng tiếng Việt — mở sân khấu bằng Microsoft Edge' : 'Giọng đọc: chưa mở sân khấu', stageVoice.reportedAt ? 'bad' : 'warn');
 }
 
 function kv(obj) {
@@ -187,6 +201,9 @@ function renderConfig() {
   $('#music-volume').value = w.audio.musicVolume;
   $('#sfx-volume').value = w.audio.sfxVolume;
   $('#tts-volume').value = w.audio.ttsVolume;
+  $('#tts-gender').value = w.audio.ttsGender || 'female';
+  $('#read-aloud').value = w.comments?.readAloud?.mode || 'all';
+  if (document.activeElement !== $('#music-url')) $('#music-url').value = w.audio.musicUrl || '';
 
   const chapters = [...w.storyline.chapters].sort((a, b) => a.order - b.order);
   $('#chapter-table tbody').innerHTML = chapters
@@ -198,7 +215,7 @@ function renderConfig() {
       <td><input data-f="threshold" type="number" min="0" value="${c.threshold}"/></td>
       <td><input data-f="minDurationSec" type="number" min="0" value="${c.minDurationSec}"/></td>
       <td><select data-f="scene">${SCENE_NAMES.map((s) => `<option ${s === c.scene ? 'selected' : ''}>${s}</option>`).join('')}</select></td>
-      <td><select data-f="music">${Object.entries(TRACK_LABELS).map(([k, l]) => `<option value="${k}" ${k === c.music ? 'selected' : ''}>${escapeHtml(l)}</option>`).join('')}</select></td></tr>`
+      <td><select data-f="music">${VN_TRACKS.map(([k, l]) => `<option value="${k}" ${k === c.music ? 'selected' : ''}>${escapeHtml(l)}</option>`).join('')}</select></td></tr>`
     )
     .join('');
 
@@ -231,28 +248,28 @@ function renderConfig() {
   const field = (path, label, val, step = 1) => `<label><span>${label}</span><input data-path="${path}" type="number" step="${step}" value="${val}"/></label>`;
   $('#rules').innerHTML = `
     <fieldset><legend>Điểm</legend>
-      ${field('scoring.like.pointsPerLike', 'Điểm / like', sc.like.pointsPerLike)}
-      ${field('scoring.like.maxLikesPerEvent', 'Like tối đa / gói', sc.like.maxLikesPerEvent)}
-      ${field('scoring.follow.points', 'Follow', sc.follow.points)}
-      ${field('scoring.share.points', 'Share', sc.share.points)}
+      ${field('scoring.like.pointsPerLike', 'Điểm / lượt thả tim', sc.like.pointsPerLike)}
+      ${field('scoring.like.maxLikesPerEvent', 'Thả tim tối đa / gói', sc.like.maxLikesPerEvent)}
+      ${field('scoring.follow.points', 'Theo dõi', sc.follow.points)}
+      ${field('scoring.share.points', 'Chia sẻ', sc.share.points)}
       ${field('scoring.comment.points', 'Bình luận', sc.comment.points)}
       ${field('scoring.join.points', 'Vào phòng', sc.join.points)}
     </fieldset>
-    <fieldset><legend>Meters</legend>
-      ${field('meters.happiness.decayPerMinute', 'Happiness giảm / phút', me.happiness.decayPerMinute, 0.5)}
+    <fieldset><legend>Các thanh đo</legend>
+      ${field('meters.happiness.decayPerMinute', 'Niềm vui giảm / phút', me.happiness.decayPerMinute, 0.5)}
       ${field('meters.happiness.onFull.bonusPoints', 'Thưởng khi tràn vui', me.happiness.onFull.bonusPoints)}
-      ${field('meters.support.onFull.growth', 'Support: hệ số tăng mục tiêu', me.support.onFull.growth, 0.05)}
-      ${field('meters.support.onFull.bonusPoints', 'Thưởng Support', me.support.onFull.bonusPoints)}
-      ${field('antiSpam.likeAggregateWindowMs', 'Gộp like (ms)', as.likeAggregateWindowMs, 100)}
+      ${field('meters.support.onFull.growth', 'Ủng hộ: hệ số tăng mục tiêu', me.support.onFull.growth, 0.05)}
+      ${field('meters.support.onFull.bonusPoints', 'Thưởng khi đủ ủng hộ', me.support.onFull.bonusPoints)}
+      ${field('antiSpam.likeAggregateWindowMs', 'Gộp thả tim (ms)', as.likeAggregateWindowMs, 100)}
     </fieldset>
     <fieldset><legend>Chống spam</legend>
-      ${field('antiSpam.commentCooldownMs', 'Cooldown bình luận (ms)', as.commentCooldownMs, 100)}
+      ${field('antiSpam.commentCooldownMs', 'Chờ giữa 2 bình luận (ms)', as.commentCooldownMs, 100)}
       ${field('antiSpam.duplicateCommentWindowMs', 'Chặn trùng (ms)', as.duplicateCommentWindowMs, 1000)}
       ${field('antiSpam.maxCommentLength', 'Độ dài bình luận tối đa', as.maxCommentLength)}
-      ${field('antiSpam.shareCooldownMs', 'Cooldown share (ms)', as.shareCooldownMs, 1000)}
+      ${field('antiSpam.shareCooldownMs', 'Chờ giữa 2 lần chia sẻ (ms)', as.shareCooldownMs, 1000)}
       ${field('antiSpam.maxEventsPerUserPerMinute', 'Sự kiện / người / phút', as.maxEventsPerUserPerMinute)}
     </fieldset>
-    <fieldset><legend>Mục tiêu meter (điểm để đầy)</legend>
+    <fieldset><legend>Mục tiêu từng thanh (điểm để đầy)</legend>
       ${Object.entries(w.meters).map(([id, m]) => field(`meters.${id}.max`, `${m.icon} ${m.label}`, m.max)).join('')}
     </fieldset>
     <fieldset><legend>Hàng đợi hiệu ứng</legend>
@@ -380,6 +397,9 @@ $('#live-form').addEventListener('submit', async (e) => {
   toast('Đang kết nối…');
   await call('live.connect', { username }, '✓ Đã kết nối TikTok Live').catch(() => {});
 });
+$('#tts-gender').addEventListener('change', (e) => call('wedding.updateConfig', { section: 'wedding', patch: { audio: { ttsGender: e.target.value } } }, '✓ Đã đổi giọng đọc'));
+$('#read-aloud').addEventListener('change', (e) => call('wedding.updateConfig', { section: 'wedding', patch: { comments: { readAloud: { mode: e.target.value } } } }, '✓ Đã lưu'));
+$('#music-url').addEventListener('change', (e) => call('wedding.updateConfig', { section: 'wedding', patch: { audio: { musicUrl: e.target.value.trim() } } }, '✓ Đã đổi nhạc nền'));
 $('#auto-connect').addEventListener('change', (e) => call('wedding.updateConfig', { section: 'wedding', patch: { tiktok: { autoConnect: e.target.checked, username: $('#live-user').value.trim().replace(/^@/, '') } } }, '✓ Đã lưu'));
 $('#auto-advance').addEventListener('change', (e) => call('wedding.updateConfig', { section: 'wedding', patch: { storyline: { autoAdvance: e.target.checked } } }, '✓ Đã lưu'));
 
@@ -392,7 +412,7 @@ $('#score-form').addEventListener('submit', async (e) => {
 });
 $('#couple-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-  await call('wedding.updateConfig', { section: 'wedding', patch: { couple: { groomName: $('#groom-name').value.trim() || 'Minh', brideName: $('#bride-name').value.trim() || 'Linh' } } }, '✓ Đã lưu tên cặp đôi (màn hình stage sẽ tải lại)');
+  await call('wedding.updateConfig', { section: 'wedding', patch: { couple: { groomName: $('#groom-name').value.trim() || 'Minh', brideName: $('#bride-name').value.trim() || 'Linh' } } }, '✓ Đã lưu tên cặp đôi (màn hình sân khấu sẽ tải lại)');
 });
 
 $('#mock-custom').addEventListener('submit', (e) => {
@@ -479,7 +499,7 @@ $('#clear-logs').addEventListener('click', () => {
 
 // manual effects + mock gift catalog
 $('#manual-effects').innerHTML = Object.keys(MANUAL_EFFECTS)
-  .map((k) => `<button class="btn sm" data-effect="${k}">${k}</button>`)
+  .map((k) => `<button class="btn sm" data-effect="${k}">${MANUAL_LABELS[k] || k}</button>`)
   .join('');
 
 // ------------------------------------------------------------------ socket wiring
@@ -501,6 +521,10 @@ net.on('wedding.state', renderState);
 net.on('wedding.status', renderStatus);
 net.on('live.status', renderLive);
 net.on('tts.status', renderTts);
+net.on('tts.voice', (v) => {
+  stageVoice = v;
+  renderTts();
+});
 net.on('wedding.log', addLog);
 net.on('server.log', addLog);
 net.on('config.updated', ({ section, value }) => {

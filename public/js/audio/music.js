@@ -1,7 +1,8 @@
 /**
  * Score library. Every track is generated note data, rendered live by the synth.
- * Melodies are original arrangements of public-domain works (Pachelbel ~1700,
- * Wagner 1850, Mendelssohn-style fanfare 1842) or original compositions.
+ * The show uses the original Vietnamese ngũ cung (pentatonic) score (vn_* tracks) when no
+ * background song URL is configured. The older Western arrangements stay in the library
+ * only so saved configs that still name them keep working.
  *
  * Event: { t: beat, d: beats, n: midi | midi[], i: instrument, v: velocity 0..1 }
  */
@@ -175,6 +176,73 @@ function vnCelebration() {
   return { id: 'vn_celebration', bpm: 112, length: 32, events: ev };
 }
 
+/** Rước dâu — festive procession: trống (drum) on the off-beats, đàn tranh (harp) tremolo, G ngũ cung melody. */
+function vnRuocDau() {
+  const ev = [];
+  const drone = [['G2', chord('G3', 'D4')], ['D3', chord('D3', 'A3')], ['E2', chord('E3', 'B3')], ['G2', chord('G3', 'D4')]];
+  for (let rep = 0; rep < 2; rep++) {
+    drone.forEach(([b, c], i) => {
+      const t = (rep * 4 + i) * 4;
+      ev.push({ t, d: 2, n: m(b), i: 'bass', v: 0.45 }, { t: t + 2, d: 2, n: m(b) + 7, i: 'bass', v: 0.32 });
+      for (const [k, v] of [[0, 0.5], [1.5, 0.3], [2, 0.42], [3, 0.3], [3.5, 0.24]]) ev.push({ t: t + k, d: 0.15, n: m('C2'), i: 'drum', v });
+      for (let k = 0; k < 8; k++) ev.push({ t: t + k * 0.5, d: 0.5, n: c[k % 2] + 12, i: 'harp', v: k % 2 ? 0.14 : 0.2 });
+    });
+  }
+  ev.push(...line('G4:1 A4:1 B4:1 D5:1 E5:2 D5:1 B4:1 A4:1 B4:1 D5:2 G4:4 B4:1 D5:1 E5:1 G5:1 E5:2 D5:2 B4:1 A4:1 G4:1 A4:1 B4:4', { i: 'lead', v: 0.44 }).events);
+  return { id: 'vn_ruoc_dau', bpm: 100, length: 32, events: ev };
+}
+
+/** Lễ gia tiên — solemn and slow: temple bell, đàn tranh arpeggios, sáo (lead) on E ngũ cung (E G A B D). */
+function vnGiaTien() {
+  const ev = [];
+  const drone = [['E2', chord('E3', 'B3')], ['A2', chord('A3', 'E4')], ['D3', chord('D3', 'A3')], ['E2', chord('E3', 'B3')]];
+  drone.forEach(([b, c], i) => {
+    const t = i * 8;
+    ev.push({ t, d: 8, n: m(b), i: 'bass', v: 0.32 }, { t, d: 8, n: c, i: 'pad', v: 0.12 }, { t, d: 4, n: m('E5'), i: 'bell', v: 0.2 });
+    for (let k = 0; k < 8; k++) ev.push({ t: t + k, d: 1.2, n: [c[0] + 12, c[1] + 12, c[0] + 24, c[1] + 12][k % 4], i: 'harp', v: k % 4 === 0 ? 0.22 : 0.14 });
+  });
+  ev.push(...line('E5:2 G5:1 A5:1 B5:3 A5:1 G5:2 E5:1 D5:1 E5:4 G5:2 A5:1 B5:1 D6:3 B5:1 A5:2 G5:1 A5:1 E5:4', { i: 'lead', v: 0.36 }).events);
+  return { id: 'vn_gia_tien', bpm: 66, length: 32, events: ev };
+}
+
+/** Tình ca — gentle ballad for the ring exchange on C ngũ cung (C D E G A). */
+function vnTinhCa() {
+  const ev = [];
+  const CH = [chord('C4', 'E4', 'G4'), chord('A3', 'C4', 'E4'), chord('F3', 'A3', 'C4'), chord('G3', 'B3', 'D4')];
+  for (const start of [0, 16]) {
+    ev.push(...arpeggio(CH, { start, beatsPerChord: 4, step: 0.5, pattern: [0, 1, 2, 3, 2, 1, 0, 1], v: 0.28 }));
+    ev.push(...bassLine(['C3', 'A2', 'F2', 'G2'], { start, beatsPerNote: 4, v: 0.38 }));
+  }
+  ev.push(...line('E5:1.5 D5:.5 C5:1 D5:1 E5:2 G5:2 A5:1.5 G5:.5 E5:1 D5:1 C5:4 E5:1 G5:1 A5:2 C6:1.5 A5:.5 G5:2 E5:1 D5:1 E5:1 G5:1 D5:4', { i: 'strings', v: 0.4 }).events);
+  return { id: 'vn_tinh_ca', bpm: 72, length: 32, events: ev };
+}
+
+/** Nên duyên — short bright fanfare with drums for the kiss. */
+function vnHonLe() {
+  const ev = [];
+  for (let b = 0; b < 16; b++) {
+    ev.push({ t: b, d: 0.15, n: m('C2'), i: 'drum', v: b % 4 === 0 ? 0.5 : 0.28 });
+    ev.push({ t: b, d: 0.9, n: m(b % 8 < 4 ? 'G2' : 'D3'), i: 'bass', v: 0.36 });
+  }
+  ev.push({ t: 0, d: 4, n: m('G5'), i: 'bell', v: 0.22 }, { t: 12, d: 4, n: m('G5'), i: 'bell', v: 0.22 });
+  ev.push(...line('G4:.5 B4:.5 D5:1 G5:2 E5:.5 D5:.5 E5:1 G5:2 A5:1 G5:1 E5:1 D5:1 G5:4', { i: 'brass', v: 0.5 }).events);
+  return { id: 'vn_hon_le', bpm: 120, length: 16, events: ev };
+}
+
+/** Trăm năm hạnh phúc — warm finale on D ngũ cung (D E F# A B) with bells. */
+function vnTramNam() {
+  const ev = [];
+  const CH = [chord('D4', 'F#4', 'A4'), chord('B3', 'D4', 'F#4'), chord('G3', 'B3', 'D4'), chord('A3', 'C#4', 'E4')];
+  for (const start of [0, 16]) {
+    ev.push(...arpeggio(CH, { start, beatsPerChord: 4, step: 0.5, i: 'harp', v: 0.24 }));
+    ev.push(...padChords(CH, { start, beatsPerChord: 4, v: 0.12 }));
+    ev.push(...bassLine(['D3', 'B2', 'G2', 'A2'], { start, beatsPerNote: 4, v: 0.4 }));
+    ev.push({ t: start, d: 4, n: m('D6'), i: 'bell', v: 0.16 });
+  }
+  ev.push(...line('A4:1 B4:1 D5:2 E5:1 F#5:1 A5:2 B5:1 A5:1 F#5:1 E5:1 D5:4 F#5:1 A5:1 B5:2 D6:2 B5:2 A5:1 F#5:1 E5:2 D5:4', { i: 'lead', v: 0.42 }).events);
+  return { id: 'vn_tram_nam', bpm: 92, length: 32, events: ev };
+}
+
 function modernPulse() {
   const ev = [];
   const CH = [chord('A3', 'C4', 'E4', 'G4'), chord('F3', 'A3', 'C4', 'E4'), chord('C4', 'E4', 'G4', 'B4'), chord('G3', 'B3', 'D4', 'F#4')];
@@ -224,6 +292,11 @@ export const TRACKS = {
   finale: sorted(finale()),
   vn_prelude: sorted(vnPrelude()),
   vn_celebration: sorted(vnCelebration()),
+  vn_ruoc_dau: sorted(vnRuocDau()),
+  vn_gia_tien: sorted(vnGiaTien()),
+  vn_tinh_ca: sorted(vnTinhCa()),
+  vn_hon_le: sorted(vnHonLe()),
+  vn_tram_nam: sorted(vnTramNam()),
   modern_pulse: sorted(modernPulse()),
   modern_groove: sorted(modernGroove()),
   fairy_music_box: sorted(fairyMusicBox())
@@ -236,8 +309,13 @@ export const TRACK_LABELS = {
   wedding_march: 'Wedding March Fanfare',
   waltz: 'First Dance Waltz (original)',
   finale: 'Forever Together (Canon finale)',
-  vn_prelude: 'Ngũ Cung Prelude (original)',
-  vn_celebration: 'Tiệc Cưới Việt (original)',
+  vn_prelude: 'Dạo đầu ngũ cung (sáng tác)',
+  vn_celebration: 'Tiệc cưới Việt (sáng tác)',
+  vn_ruoc_dau: 'Rước dâu — trống & đàn tranh (sáng tác)',
+  vn_gia_tien: 'Lễ gia tiên — chuông & sáo (sáng tác)',
+  vn_tinh_ca: 'Tình ca trao nhẫn (sáng tác)',
+  vn_hon_le: 'Nên duyên — kèn mừng (sáng tác)',
+  vn_tram_nam: 'Trăm năm hạnh phúc (sáng tác)',
   modern_pulse: 'Modern Pulse (original)',
   modern_groove: 'Modern Groove (original)',
   fairy_music_box: 'Fairy Music Box (original)'

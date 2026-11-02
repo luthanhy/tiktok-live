@@ -44,6 +44,7 @@ export class WeddingAudio {
     }
     if (this.ctx.state === 'suspended') this.ctx.resume().then(() => this.onStateChange?.());
     if (this.nextTrackId && !this.track) this.playMusic(this.nextTrackId);
+    else if (this.bgm?.paused) this.bgm.play().catch(() => {});
     this.onStateChange?.();
     return true;
   }
@@ -69,8 +70,18 @@ export class WeddingAudio {
   }
 
   applyVolumes() {
-    if (!this.ctx) return;
     const c = this.cfg;
+    // The song URL can be changed from the dashboard while the show runs.
+    if (this.bgm && c.musicUrl && this.bgm.dataset.url !== c.musicUrl) {
+      this.bgmFailed = false;
+      this.playSong(c.musicUrl);
+    } else if (this.bgm && !c.musicUrl) {
+      this.bgm.pause();
+      this.bgm = null;
+      if (this.nextTrackId) this.playMusic(this.nextTrackId);
+    }
+    this.applySongVolume();
+    if (!this.ctx) return;
     const t = this.ctx.currentTime;
     const master = this.isMuted() ? 0 : Number(c.masterVolume ?? 0.9);
     this.musicBus.gain.setTargetAtTime(c.musicEnabled === false ? 0 : (c.musicVolume ?? 0.55) * 0.9 * master, t, 0.3);
@@ -346,6 +357,11 @@ export class WeddingAudio {
   // ---------------------------------------------------------------- music
   playMusic(id) {
     this.nextTrackId = id;
+    // A configured song (audio.musicUrl) replaces the synthesized score for the whole show.
+    if (this.cfg.musicUrl && !this.bgmFailed) {
+      this.playSong(this.cfg.musicUrl);
+      return;
+    }
     if (!this.ctx) return;
     const track = TRACKS[id];
     if (!track) return;
@@ -362,6 +378,36 @@ export class WeddingAudio {
     this.trackGain.gain.linearRampToValueAtTime(1, now + 1.6);
     this.trackGain.connect(this.musicBus);
     this.track = { ...track, startAt: now + 0.15, cursor: 0, loop: 0 };
+  }
+
+  /** Loop one song file. Plain <audio> (not routed through WebAudio) so a CDN without CORS still plays. */
+  playSong(url) {
+    if (this.track) this.stopMusic();
+    if (!this.bgm) {
+      this.bgm = new Audio();
+      this.bgm.loop = true;
+      this.bgm.preload = 'auto';
+      this.bgm.addEventListener('error', () => {
+        console.warn('[audio] background song failed to load, using the built-in score', this.bgm.src);
+        this.bgmFailed = true;
+        this.bgm = null;
+        if (this.nextTrackId) this.playMusic(this.nextTrackId);
+      });
+    }
+    if (this.bgm.dataset.url !== url) {
+      this.bgm.dataset.url = url;
+      this.bgm.src = url;
+    }
+    this.applySongVolume();
+    if (this.bgm.paused) this.bgm.play().catch(() => {}); // retried on unlock() after a user gesture
+  }
+
+  applySongVolume() {
+    if (!this.bgm) return;
+    const c = this.cfg;
+    const master = this.isMuted() ? 0 : Number(c.masterVolume ?? 0.9);
+    const v = c.musicEnabled === false ? 0 : (c.musicVolume ?? 0.55) * master * (this.ducked ? 0.35 : 1);
+    this.bgm.volume = Math.max(0, Math.min(1, v));
   }
 
   stopMusic() {
@@ -523,6 +569,8 @@ export class WeddingAudio {
   }
 
   setDuck(on) {
+    this.ducked = on;
+    this.applySongVolume();
     if (!this.ctx) return;
     this.duck.gain.setTargetAtTime(on ? 0.35 : 1, this.ctx.currentTime, 0.25);
   }
@@ -566,20 +614,43 @@ export class WeddingAudio {
     }
   }
 
+  /**
+   * Best Vietnamese voice on this machine: Microsoft Edge's natural voices (HoaiMy / NamMinh)
+   * first, then any other vi-VN voice (e.g. Microsoft An). Never a foreign voice — an English
+   * voice reading Vietnamese sounds wrong, so without one we stay silent.
+   */
+  vietnameseVoice() {
+    const voices = window.speechSynthesis?.getVoices() || [];
+    const vi = voices.filter((v) => /^vi([-_]|$)/i.test(v.lang));
+    // Edge names them "Microsoft Hoài My Online (Natural)" / "Microsoft Nam Minh Online (Natural)".
+    const want = this.cfg.ttsGender === 'male' ? /Nam\s*Minh/i : /Ho[aà]i\s*My/i;
+    return vi.find((v) => want.test(v.name)) || vi.find((v) => /Natural|Online/i.test(v.name)) || vi[0] || null;
+  }
+
+  /** Name of the voice that will read, or '' when this screen has no Vietnamese voice. */
+  voiceStatus() {
+    return this.vietnameseVoice()?.name || '';
+  }
+
   playBrowserTts(text) {
     return new Promise((resolve) => {
       const synth = window.speechSynthesis;
       if (!synth) return resolve();
+      const vi = this.vietnameseVoice();
+      if (!vi) return resolve();
       const u = new SpeechSynthesisUtterance(text);
-      const voices = synth.getVoices();
-      const vi = voices.find((v) => /^vi/i.test(v.lang));
-      if (vi) u.voice = vi;
-      u.lang = vi?.lang || 'vi-VN';
-      u.rate = 1.02;
-      u.pitch = 1.05;
+      u.voice = vi;
+      u.lang = vi.lang;
+      u.rate = 1;
+      u.pitch = 1;
       u.volume = (this.cfg.ttsVolume ?? 0.95) * Number(this.cfg.masterVolume ?? 0.9);
+      // onstart only fires once audio really plays, so the dashboard can show what was actually read.
+      u.onstart = () => this.onSpoken?.({ text, voice: vi.name });
       u.onend = resolve;
-      u.onerror = resolve;
+      u.onerror = (e) => {
+        this.onSpoken?.({ text, voice: vi.name, error: e?.error || 'error' });
+        resolve();
+      };
       synth.speak(u);
       setTimeout(resolve, Math.min(20000, 1500 + text.length * 90));
     });

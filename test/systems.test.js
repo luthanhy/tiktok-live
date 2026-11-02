@@ -227,3 +227,36 @@ test('persisted state round-trips meters, leaderboard and mode data', () => {
   assert.equal(restored.mode.teamOf('a'), 'bride');
   assert.equal(restored.leaderboard()[0].id, 'a');
 });
+
+test('a pre-Vietnamese saved config is migrated to the Vietnamese storyline, keeping tuned numbers', () => {
+  const { ConfigStore } = require('../src/config');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'wedding-mig-'));
+  const legacy = JSON.parse(JSON.stringify(require('../src/config/wedding.config.json')));
+  delete legacy.locale;
+  legacy.theme.variant = 'luxury';
+  legacy.couple.weddingTitle = 'WEDDING LIVE – THE BIG DAY';
+  legacy.meters.happiness.label = 'Happiness';
+  legacy.storyline.chapters[0].title = 'Wedding Preparation';
+  legacy.storyline.chapters[0].music = 'prelude';
+  legacy.storyline.chapters[0].threshold = 0;
+  legacy.storyline.chapters[1].minDurationSec = 99;
+  fs.writeFileSync(path.join(dir, 'wedding.config.json'), JSON.stringify(legacy));
+  const cfg = new ConfigStore({ overrideDir: dir }).wedding;
+  assert.equal(cfg.locale, 'vi');
+  assert.equal(cfg.theme.variant, 'vietnamese');
+  assert.equal(cfg.couple.weddingTitle, 'ĐÁM CƯỚI LIVE – NGÀY VUI CHUNG ĐÔI');
+  assert.equal(cfg.meters.happiness.label, 'Niềm vui');
+  assert.equal(cfg.storyline.chapters[0].title, 'Chuẩn Bị Đám Cưới');
+  assert.equal(cfg.storyline.chapters[0].music, 'vn_prelude');
+  assert.equal(cfg.storyline.chapters[1].minDurationSec, 99, 'streamer tuning is kept');
+  const saved = JSON.parse(fs.readFileSync(path.join(dir, 'wedding.config.json'), 'utf8'));
+  assert.equal(saved.locale, 'vi', 'migration is written back once');
+});
+
+test('Vietnamese defaults: theme, voice gender, background song and all chapter music', () => {
+  const cfg = require('../src/config/wedding.config.json');
+  assert.equal(cfg.theme.variant, 'vietnamese');
+  assert.equal(cfg.audio.ttsGender, 'female');
+  assert.match(cfg.audio.musicUrl, /^https:\/\/cdn\.songhy\.online\/.+\.mp3$/);
+  for (const ch of cfg.storyline.chapters) assert.match(ch.music, /^vn_/, `${ch.id} uses Vietnamese music`);
+});

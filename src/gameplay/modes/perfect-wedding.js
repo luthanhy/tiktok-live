@@ -1,7 +1,7 @@
 /**
  * Perfect Wedding — every chapter must be completed within its time limit.
  * Each miss is a "mistake"; too many mistakes and the wedding must start over.
- * Reaching the finale with zero mistakes earns the PERFECT WEDDING title.
+ * Reaching the finale with zero mistakes earns the perfect-wedding title.
  */
 const { GameMode } = require('./base');
 
@@ -10,7 +10,7 @@ class PerfectWeddingMode extends GameMode {
     return 'perfect_wedding';
   }
   static get label() {
-    return 'Perfect Wedding';
+    return 'Đám cưới đúng giờ lành';
   }
   static get description() {
     return 'Hoàn thành từng chương đúng giờ — tối đa 3 lỗi!';
@@ -31,7 +31,7 @@ class PerfectWeddingMode extends GameMode {
     this.chapterDeadline = this.now() + this.limitMs();
     if (this.result || index !== this.engine.chapterCount() - 1) return;
     this.result = 'success';
-    this.emit('mode_result', { success: true, title: this.mistakes === 0 ? 'PERFECT WEDDING!' : 'Đám cưới hoàn thành!', detail: `${this.mistakes} lỗi`, mistakes: this.mistakes }, 20);
+    this.emit('mode_result', { success: true, title: this.mistakes === 0 ? 'ĐÚNG GIỜ LÀNH, TRỌN VẸN!' : 'Đám cưới hoàn thành!', detail: `${this.mistakes} lỗi`, mistakes: this.mistakes }, 20);
   }
 
   onTick(now) {

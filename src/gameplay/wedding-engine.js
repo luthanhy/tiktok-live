@@ -13,6 +13,7 @@
 const { resolveGift } = require('./gift-mapper');
 const { MeterManager } = require('./meters');
 const { Leaderboard } = require('./leaderboard');
+const { Announcer } = require('./announcer');
 const { createMode, listModes } = require('./modes');
 const storyline = require('../storyline/storyline');
 const { sanitizeUserName, sanitizeText, sanitizeAvatar } = require('../events/sanitizer');
@@ -54,7 +55,7 @@ class WeddingEngine {
     this.clock = clock || Date.now;
     this.eventLog = [];
     this.listeners = new Set();
-    this.lastWishTtsAt = 0;
+    this.announcer = new Announcer({ clock: () => this.clock(), getConfig: () => this.cfg });
     this.giftEffectAt = new Map();
     this.meters = new MeterManager(() => this.cfg.meters);
     this.board = new Leaderboard(() => this.cfg.leaderboard || {});
@@ -240,11 +241,11 @@ class WeddingEngine {
       this.state.counters.follows += 1;
       const isNew = this.seatGuest(user, 'guest');
       this.log({ type: 'follow', user: user.name, points });
-      this.emit('guest_arrival', PRIORITY.follow, { user, isNew, team: this.mode.teamOf(user.id), guests: this.state.counters.guests });
+      this.emit('guest_arrival', PRIORITY.follow, { user, isNew, team: this.mode.teamOf(user.id), guests: this.state.counters.guests, tts: this.announcer.follow(user.name) });
     } else {
       this.state.counters.shares += 1;
       this.log({ type: 'share', user: user.name, points });
-      this.emit('confetti', PRIORITY.share, { user });
+      this.emit('confetti', PRIORITY.share, { user, tts: this.announcer.share(user.name) });
     }
     return { ok: true, user, supporter: sup, points };
   }
@@ -253,6 +254,8 @@ class WeddingEngine {
     const user = this.normalizeUser(e.user);
     const sup = this.board.get(user, this.clock());
     const points = this.addLove(this.cfg.scoring?.join?.points ?? 1, sup);
+    const tts = this.announcer.join(user.name);
+    if (tts) this.emit('welcome', PRIORITY.hearts, { user, tts }, { coalesceKey: 'welcome', merge: (_a, b) => b });
     return { ok: true, user, supporter: sup, points };
   }
 
@@ -289,14 +292,8 @@ class WeddingEngine {
       this.state.counters.photos += 1;
     }
 
-    // Read comments aloud (all / wishes only / off), spaced so TTS never floods the room.
-    const read = this.cfg.comments?.readAloud || {};
-    const mode = read.mode || 'all';
-    let tts = '';
-    if (clean && (mode === 'all' || (mode === 'wishes' && action === 'wish')) && this.clock() - this.lastWishTtsAt >= (read.minGapMs ?? 2500)) {
-      this.lastWishTtsAt = this.clock();
-      tts = `${user.name} ${action === 'wish' ? 'chúc' : 'nói'}: ${text}`;
-    }
+    // Read comments aloud (all / wishes only / off), spaced by the announcer so TTS never floods the room.
+    const tts = clean ? this.announcer.comment({ name: user.name, text, wish: action === 'wish' }) : '';
     this.log({ type: 'comment', action, user: user.name, text, points });
     this.emit(action, PRIORITY.comment, { user, text, tts, emojis }, action === 'wish' ? {} : { coalesceKey: action, merge: (_a, b) => b });
     return { ok: true, user, supporter: sup, points, action, text, meterExtra: { commentAction: action } };
@@ -353,7 +350,7 @@ class WeddingEngine {
     }
 
     const giftText = g.count > 1 ? `${g.count} ${g.label}` : g.label;
-    const tts = g.announce ? `Cảm ơn ${user.name} đã tặng ${giftText} chúc mừng cô dâu chú rể!` : '';
+    const tts = this.announcer.gift({ name: user.name, gift: giftText, big: Boolean(g.announce) && g.tier !== 'medium' });
     this.log({ type: 'gift', user: user.name, gift: g.label, count: g.count, diamonds: g.totalDiamonds, tier: g.tier, rarity: g.rarity, points, note, boost });
     const payload = {
       user,

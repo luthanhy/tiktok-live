@@ -48,7 +48,7 @@ export class Overlays {
       <div class="summary-card"></div>
       <div class="mega-title"><div class="mt-kicker"></div><div class="mt-title"></div><div class="mt-sub"></div></div>
       <div class="float-layer"></div>
-      <div class="pause-veil"><div><div class="pv-title">Intermission</div><div class="pv-sub">Đám cưới tạm dừng — quay lại ngay!</div></div></div>`;
+      <div class="pause-veil"><div><div class="pv-title">Tạm nghỉ giữa giờ</div><div class="pv-sub">Đám cưới tạm dừng — quay lại ngay!</div></div></div>`;
     this.q = (s) => this.layer.querySelector(s);
   }
 
@@ -85,7 +85,7 @@ export class Overlays {
 
   async chapterCard(ch, ms = 3600) {
     const card = this.q('.chapter-card');
-    card.querySelector('.cc-num').textContent = `Chapter ${ch.order}`;
+    card.querySelector('.cc-num').textContent = `Chương ${ch.order}`;
     card.querySelector('.cc-title').textContent = ch.title;
     card.querySelector('.cc-sub').textContent = ch.subtitle || '';
     card.classList.add('show');
@@ -179,14 +179,14 @@ export class Overlays {
       <div class="sum-kicker">Final Scoreboard · ${mins} phút</div>
       <div class="sum-names">${escapeHtml(couple?.groomName || '')} <em>&amp;</em> ${escapeHtml(couple?.brideName || '')}</div>
       <div class="sum-grid">
-        ${stat(summary.love, 'Love Score', '💗')}
-        ${stat(`${summary.happiness ?? 0}%`, 'Happiness', '😊')}
-        ${stat(summary.gifts, 'Total Gifts', '🎁')}
-        ${stat(summary.guests, 'Total Guests', '👥')}
-        ${stat(summary.flowers, 'Total Flowers', '🌹')}
-        ${stat(summary.comments ?? summary.wishes, 'Total Comments', '💬')}
+        ${stat(summary.love, 'Điểm yêu thương', '💗')}
+        ${stat(`${summary.happiness ?? 0}%`, 'Niềm vui', '😊')}
+        ${stat(summary.gifts, 'Tổng quà tặng', '🎁')}
+        ${stat(summary.guests, 'Tổng khách mời', '👥')}
+        ${stat(summary.flowers, 'Tổng hoa hồng', '🌹')}
+        ${stat(summary.comments ?? summary.wishes, 'Tổng bình luận', '💬')}
       </div>
-      <div class="sum-top-title">Top Supporters</div>
+      <div class="sum-top-title">Khách quý ủng hộ nhiều nhất</div>
       <ol class="sum-top">${top || '<li>—</li>'}</ol>
       <div class="sum-end">THE BIG DAY IS COMPLETE</div>`;
     card.classList.remove('compact');
@@ -215,7 +215,8 @@ export class Overlays {
     if (layer.children.length >= 3) layer.firstElementChild.remove();
     const el = document.createElement('div');
     el.className = 'float-wish';
-    const x = 470 + Math.random() * 980;
+    const w = this.root.offsetWidth || 1920;
+    const x = w * (0.245 + Math.random() * 0.51);
     el.style.left = `${x}px`;
     el.style.setProperty('--drift', `${(Math.random() - 0.5) * 120}px`);
     el.innerHTML = `${avatarHtml(user, 'fw-av')}<div><b>${escapeHtml(shortName(user?.name, 16))}</b><p>${escapeHtml(text)}</p></div><span class="fw-heart">💌</span>`;

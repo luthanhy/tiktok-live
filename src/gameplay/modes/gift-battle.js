@@ -9,10 +9,10 @@ class GiftBattleMode extends GameMode {
     return 'gift_battle';
   }
   static get label() {
-    return 'Gift Battle';
+    return 'Đấu quà mừng';
   }
   static get description() {
-    return 'Mỗi hiệp, người đóng góp nhiều nhất được vinh danh Round Champion.';
+    return 'Mỗi hiệp, người đóng góp nhiều nhất được vinh danh là quán quân của hiệp.';
   }
 
   onReset() {

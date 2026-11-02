@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wedding Admin – The Big Day</title>
+  <title>Quản lý Đám Cưới Live</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎛️</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,17 +12,17 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="brand"><span class="script">The Big Day</span><span class="kicker">Wedding Admin Dashboard</span></div>
+    <div class="brand"><span class="script">Ngày Chung Đôi</span><span class="kicker">Bảng quản lý đám cưới</span></div>
     <div class="status-row">
-      <span class="pill" id="ws-pill">WS</span>
+      <span class="pill" id="ws-pill">Máy chủ</span>
       <span class="pill" id="live-pill">TikTok</span>
-      <span class="pill" id="tts-pill">TTS</span>
-      <span class="pill" id="game-pill">Game</span>
+      <span class="pill" id="tts-pill">Giọng đọc</span>
+      <span class="pill" id="game-pill">Trò chơi</span>
     </div>
     <div class="links">
-      <a href="/" target="_blank" rel="noopener">📺 Stage</a>
-      <a href="/?obs=1" target="_blank" rel="noopener">🎥 OBS</a>
-      <label class="token">🔑 <input id="admin-token" type="password" placeholder="Admin token (nếu có)" autocomplete="off" /></label>
+      <a href="/" target="_blank" rel="noopener">📺 Sân khấu</a>
+      <a href="/?obs=1" target="_blank" rel="noopener">🎥 Bản để live</a>
+      <label class="token">🔑 <input id="admin-token" type="password" placeholder="Mã quản trị (nếu có)" autocomplete="off" /></label>
     </div>
   </header>
 
@@ -37,9 +37,9 @@
           <div class="now-sub" id="now-sub"></div>
         </div>
         <div class="big-stats">
-          <div><b id="st-love">0</b><span>Love points</span></div>
+          <div><b id="st-love">0</b><span>Điểm yêu thương</span></div>
           <div><b id="st-next">—</b><span>Tới chương sau</span></div>
-          <div><b id="st-happy">0%</b><span>Happiness</span></div>
+          <div><b id="st-happy">0%</b><span>Niềm vui</span></div>
           <div><b id="st-elapsed">0s</b><span>Thời gian chương</span></div>
         </div>
       </div>
@@ -47,7 +47,7 @@
       <div class="btn-row">
         <button class="btn primary" data-rpc="wedding.start">▶ Bắt đầu / Tiếp tục</button>
         <button class="btn" data-rpc="wedding.pause">⏸ Tạm dừng</button>
-        <button class="btn danger" data-rpc="wedding.reset" data-confirm="Reset toàn bộ đám cưới (điểm, khách mời, chương)?">⟲ Reset</button>
+        <button class="btn danger" data-rpc="wedding.reset" data-confirm="Reset toàn bộ đám cưới (điểm, khách mời, chương)?">⟲ Làm lại từ đầu</button>
         <span class="sep"></span>
         <button class="btn" data-rpc="wedding.prevChapter">⏮ Chương trước</button>
         <button class="btn" data-rpc="wedding.restartChapter">↺ Diễn lại chương</button>
@@ -55,25 +55,25 @@
         <label class="switch"><input type="checkbox" id="auto-advance" /> <span>Tự động chuyển chương</span></label>
       </div>
       <ol class="chapter-list" id="chapter-list"></ol>
-      <h3>Meters của chương</h3>
+      <h3>Các thanh của chương</h3>
       <div class="meter-list" id="meter-list"></div>
     </section>
 
     <!-- MODE & VARIANT -->
     <section class="card" id="card-mode">
       <h2>Chế độ chơi & phong cách</h2>
-      <h3>Game mode</h3>
+      <h3>Chế độ chơi</h3>
       <div class="choice-grid" id="mode-list"></div>
-      <h3>Visual variant</h3>
+      <h3>Phong cách đám cưới</h3>
       <div class="choice-grid" id="theme-list"></div>
-      <p class="muted small">Đổi mode sẽ bắt đầu lại đám cưới. Đổi variant sẽ tải lại màn hình stage.</p>
+      <p class="muted small">Đổi chế độ chơi sẽ bắt đầu lại đám cưới. Đổi phong cách sẽ tải lại màn hình sân khấu.</p>
     </section>
 
     <!-- TIKTOK -->
     <section class="card" id="card-live">
-      <h2>Kết nối TikTok Live</h2>
+      <h2>Kết nối TikTok LIVE</h2>
       <form id="live-form" class="inline-form">
-        <input id="live-user" placeholder="@username hoặc link live" autocomplete="off" />
+        <input id="live-user" placeholder="@tên_tiktok hoặc link live" autocomplete="off" />
         <button class="btn primary" type="submit">Kết nối</button>
         <button class="btn" type="button" data-rpc="live.disconnect">Ngắt</button>
       </form>
@@ -94,8 +94,8 @@
         <button class="btn" data-score="5000">+5000</button>
       </div>
       <form class="inline-form" id="score-form">
-        <input type="number" id="score-set" placeholder="Đặt Love = …" min="0" />
-        <input type="number" id="happy-set" placeholder="Happiness %" min="0" max="99" />
+        <input type="number" id="score-set" placeholder="Đặt điểm yêu thương = …" min="0" />
+        <input type="number" id="happy-set" placeholder="Niềm vui %" min="0" max="99" />
         <button class="btn primary" type="submit">Áp dụng</button>
       </form>
       <h3>Cặp đôi</h3>
@@ -108,29 +108,29 @@
 
     <!-- MOCK -->
     <section class="card" id="card-mock">
-      <h2>Mock TikTok Events</h2>
+      <h2>Chạy thử sự kiện TikTok</h2>
       <div class="btn-row wrap">
-        <button class="btn" data-mock='{"type":"like","count":20}'>💗 Like ×20</button>
-        <button class="btn" data-mock='{"type":"follow"}'>➕ Follow</button>
-        <button class="btn" data-mock='{"type":"share"}'>🔁 Share</button>
+        <button class="btn" data-mock='{"type":"like","count":20}'>💗 Thả tim ×20</button>
+        <button class="btn" data-mock='{"type":"follow"}'>➕ Theo dõi</button>
+        <button class="btn" data-mock='{"type":"share"}'>🔁 Chia sẻ</button>
         <button class="btn" data-mock='{"type":"comment"}'>💬 Lời chúc</button>
-        <button class="btn" data-mock='{"type":"comment","text":"chụp ảnh với cô dâu nào"}'>📸 Photo</button>
+        <button class="btn" data-mock='{"type":"comment","text":"chụp ảnh với cô dâu nào"}'>📸 Chụp ảnh</button>
         <button class="btn" data-mock='{"type":"comment","text":"hôn đi hôn đi"}'>💋 Hôn đi</button>
       </div>
       <div class="btn-row wrap" id="mock-gifts"></div>
       <form class="inline-form" id="mock-custom">
-        <input id="mock-gift-name" placeholder="Tên quà" value="Rose" />
+        <input id="mock-gift-name" placeholder="Tên quà" value="Hoa hồng" />
         <input id="mock-gift-diamonds" type="number" placeholder="Kim cương" value="1" min="1" />
         <input id="mock-gift-count" type="number" placeholder="Số lượng" value="10" min="1" />
         <button class="btn" type="submit">🎁 Gửi quà</button>
       </form>
       <form class="inline-form" id="mock-burst">
         <input id="burst-count" type="number" value="200" min="1" max="2000" />
-        <button class="btn" type="submit">⚡ Stress burst</button>
-        <label class="switch"><input type="checkbox" id="auto-sim" /> <span>Auto mô phỏng</span></label>
+        <button class="btn" type="submit">⚡ Dồn dập</button>
+        <label class="switch"><input type="checkbox" id="auto-sim" /> <span>Tự động mô phỏng</span></label>
         <input id="auto-sim-ms" type="number" value="2500" min="200" step="100" title="Chu kỳ (ms)" />
       </form>
-      <div class="btn-row wrap"><span class="muted">Stress test:</span>
+      <div class="btn-row wrap"><span class="muted">Thử tải:</span>
         <button class="btn sm" data-rate="10">10 sự kiện/giây</button>
         <button class="btn sm" data-rate="100">100/giây</button>
         <button class="btn sm" data-rate="1000">1000/giây</button>
@@ -142,26 +142,30 @@
     <section class="card" id="card-effects">
       <h2>Hiệu ứng & âm thanh</h2>
       <div class="toggles" id="effect-toggles"></div>
-      <label class="range">Particle budget <input type="range" id="particle-budget" min="150" max="1200" step="50" /> <output id="particle-budget-out"></output></label>
+      <label class="range">Số hạt hiệu ứng <input type="range" id="particle-budget" min="150" max="1200" step="50" /> <output id="particle-budget-out"></output></label>
       <h3>Kích hoạt thủ công</h3>
       <div class="btn-row wrap" id="manual-effects"></div>
       <h3>Âm thanh</h3>
       <div class="toggles" id="audio-toggles"></div>
-      <label class="range">Master <input type="range" id="master-volume" min="0" max="1" step="0.05" /></label>
+      <label class="range">Tổng <input type="range" id="master-volume" min="0" max="1" step="0.05" /></label>
       <label class="range">Nhạc <input type="range" id="music-volume" min="0" max="1" step="0.05" /></label>
-      <label class="range">SFX <input type="range" id="sfx-volume" min="0" max="1" step="0.05" /></label>
+      <label class="range">Hiệu ứng âm thanh <input type="range" id="sfx-volume" min="0" max="1" step="0.05" /></label>
       <label class="range">Giọng MC <input type="range" id="tts-volume" min="0" max="1" step="0.05" /></label>
+      <label class="range">Giọng đọc <select id="tts-gender"><option value="female">Nữ — Hoài My</option><option value="male">Nam — Nam Minh</option></select></label>
+      <label class="range">Đọc bình luận <select id="read-aloud"><option value="all">Đọc tất cả bình luận</option><option value="wishes">Chỉ đọc lời chúc</option><option value="off">Không đọc</option></select></label>
+      <label class="range">Nhạc nền (link mp3) <input id="music-url" type="url" placeholder="Để trống = nhạc ngũ cung tự soạn" /></label>
+      <p class="muted small">Giọng tiếng Việt hay nhất: mở trang sân khấu bằng <b>Microsoft Edge</b> (giọng Hoài My / Nam Minh có sẵn). Trên Chrome cần cài giọng Việt trong Windows.</p>
     </section>
 
     <!-- STATS -->
     <section class="card" id="card-stats">
       <h2>Thống kê đóng góp</h2>
       <div class="mini-stats" id="counters"></div>
-      <h3>Top supporters</h3>
+      <h3>Khách quý ủng hộ nhiều nhất</h3>
       <ol class="lb" id="lb"></ol>
       <h3>Quà theo loại</h3>
       <ul class="gs" id="gs"></ul>
-      <h3>Pipeline</h3>
+      <h3>Luồng xử lý</h3>
       <dl class="kv" id="pipeline-kv"></dl>
     </section>
 
@@ -177,18 +181,18 @@
 
     <!-- GIFT MAPPING -->
     <section class="card span-2" id="card-gifts">
-      <h2>Gift mapping</h2>
+      <h2>Cấu hình quà tặng</h2>
       <h3>Cấp quà (theo kim cương)</h3>
       <div class="table-wrap"><table class="cfg-table" id="tier-table">
-        <thead><tr><th>Tier</th><th>Tên</th><th>Từ (💎)</th><th>Điểm/💎</th><th>Điểm tối đa</th><th>Happiness</th><th>Hiệu ứng mặc định</th><th>Cooldown (ms)</th><th>Độ hiếm</th><th>Boost chương</th><th>Đọc TTS</th></tr></thead>
+        <thead><tr><th>Cấp</th><th>Tên</th><th>Từ (💎)</th><th>Điểm/💎</th><th>Điểm tối đa</th><th>Niềm vui</th><th>Hiệu ứng mặc định</th><th>Chờ (ms)</th><th>Độ hiếm</th><th>Đẩy chương</th><th>Đọc tên</th></tr></thead>
         <tbody></tbody>
       </table></div>
       <h3>Quà cụ thể (khớp theo ID trước, rồi theo tên)</h3>
       <div class="table-wrap"><table class="cfg-table" id="gift-table">
-        <thead><tr><th>Key</th><th>Tên hiển thị</th><th>Gift IDs</th><th>Tên / alias</th><th>Hiệu ứng</th><th>Ép tier</th><th>Cooldown (ms)</th><th>Âm thanh</th><th>Độ hiếm</th><th>Từ chương</th><th>Boost</th><th>🌹</th><th></th></tr></thead>
+        <thead><tr><th>Mã</th><th>Tên hiển thị</th><th>ID quà</th><th>Tên / alias</th><th>Hiệu ứng</th><th>Ép cấp</th><th>Chờ (ms)</th><th>Âm thanh</th><th>Độ hiếm</th><th>Từ chương</th><th>Đẩy chương</th><th>🌹</th><th></th></tr></thead>
         <tbody></tbody>
       </table></div>
-      <div class="btn-row"><button class="btn" id="add-gift">＋ Thêm quà</button><button class="btn primary" id="save-gifts">💾 Lưu gift mapping</button><button class="btn" data-restore="gifts">Khôi phục mặc định</button><span class="hint" id="gift-msg"></span></div>
+      <div class="btn-row"><button class="btn" id="add-gift">＋ Thêm quà</button><button class="btn primary" id="save-gifts">💾 Lưu cấu hình quà</button><button class="btn" data-restore="gifts">Khôi phục mặc định</button><span class="hint" id="gift-msg"></span></div>
     </section>
 
     <!-- RULES -->
@@ -206,11 +210,11 @@
           <option value="">Tất cả</option>
           <option value="gift">Quà</option>
           <option value="comment">Bình luận</option>
-          <option value="follow">Follow</option>
-          <option value="share">Share</option>
+          <option value="follow">Theo dõi</option>
+          <option value="share">Chia sẻ</option>
           <option value="chapter">Chương</option>
           <option value="rejected">Bị chặn (anti-spam)</option>
-          <option value="server">Server log</option>
+          <option value="server">Nhật ký máy chủ</option>
         </select>
         <button class="btn" id="clear-logs">Xóa màn hình</button>
         <button class="btn" data-rpc="wedding.clearQueue">Xả hàng đợi hiệu ứng</button>

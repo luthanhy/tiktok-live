@@ -1,7 +1,8 @@
 /**
- * Stage bootstrap — the livestream overlay (1920×1080, scales to any window).
+ * Stage bootstrap — the livestream overlay (vertical 1080×1920 by default, scales to any window).
  *   /            stage + demo controls
  *   /?obs=1      clean source for OBS / TikTok Live Studio (no controls, autoplay audio)
+ *   /?layout=landscape       16:9 1920×1080 version instead of the default vertical 9:16
  *   /?debug=1    open the developer debug panel (when the server allows it)
  */
 import { WeddingSocket } from './core/net.js';
@@ -26,9 +27,14 @@ document.body.classList.toggle('obs', OBS);
 function fit() {
   const w = document.documentElement.clientWidth || window.innerWidth;
   const h = document.documentElement.clientHeight || window.innerHeight;
-  const s = Math.min(w / 1920, h / 1080);
+  // Phone-first: the show is a vertical 1080×1920 (9:16) TikTok LIVE by default, letterboxed on a
+  // landscape monitor. ?layout=landscape switches to the 16:9 version.
+  const portrait = params.get('layout') !== 'landscape';
+  root.dataset.layout = portrait ? 'portrait' : 'landscape';
+  const [dw, dh] = portrait ? [1080, 1920] : [1920, 1080];
+  const s = Math.min(w / dw, h / dh);
   root.style.transform = `translate(-50%, -50%) scale(${s})`;
-  const boost = Math.max(1, Math.min(1.28, 0.82 / s));
+  const boost = portrait ? 1 : Math.max(1, Math.min(1.28, 0.82 / s));
   root.style.setProperty('--ui-boost', boost.toFixed(3));
   root.dataset.res = s < 0.7 ? 'small' : s < 0.9 ? 'medium' : 'large';
 }
@@ -91,7 +97,14 @@ net.on('tts.play', ({ url }) => {
   if (url) new Audio(url).play().catch(() => {});
 });
 net.on('socket.close', () => root.classList.add('offline'));
+/** Tell the dashboard which Vietnamese voice this screen reads with (voices load asynchronously). */
+function reportVoice() {
+  net.call('tts.stageVoice', { name: audio.voiceStatus() }).catch(() => {});
+}
+window.speechSynthesis?.addEventListener?.('voiceschanged', reportVoice);
+audio.onSpoken = (s) => net.call('tts.spoken', s).catch(() => {});
 net.on('socket.open', () => {
+  setTimeout(reportVoice, 800);
   root.classList.remove('offline');
   // after a reconnect, resync the chapter program
   if (director && state) director.onState(state, { initial: true });

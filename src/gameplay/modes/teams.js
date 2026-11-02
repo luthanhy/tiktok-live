@@ -80,7 +80,7 @@ class BrideVsGroomMode extends TeamMode {
     return 'bride_vs_groom';
   }
   static get label() {
-    return 'Bride vs Groom';
+    return 'Nhà gái đấu nhà trai';
   }
   static get description() {
     return 'Bình luận "cô dâu" hoặc "chú rể" để chọn phe — phe nào yêu thương nhiều hơn sẽ thắng!';
@@ -123,7 +123,7 @@ class LoveRaceMode extends TeamMode {
     return 'love_race';
   }
   static get label() {
-    return 'Love Race';
+    return 'Đua yêu thương hai họ';
   }
   static get description() {
     return 'Nhà Trai đấu Nhà Gái theo từng hiệp — hiệp nào yêu thương nhiều hơn sẽ nhận thưởng.';

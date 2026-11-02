@@ -18,6 +18,7 @@ import { pick } from '../core/util.js';
 const MAX_CINEMATIC_QUEUE = 6;
 const COMMENT_KINDS = new Set(['wish', 'kiss_cheer', 'dance', 'toast', 'photo', 'confetti']);
 const RARITY_ICON = { common: '🎁', rare: '💝', epic: '💎', legendary: '👑' };
+const RARITY_LABEL = { common: 'thường', rare: 'hiếm', epic: 'quý', legendary: 'huyền thoại' };
 
 export class Director {
   constructor({ stage, fx, ov, audio, hud, variant }) {
@@ -233,7 +234,7 @@ export class Director {
   onGift(a) {
     const { user, gift } = a;
     const icon = gift.key === 'rose' ? '🌹' : RARITY_ICON[gift.rarity] || '🎁';
-    const detail = a.boost ? '⚡ Chapter Boost!' : a.note === 'cooldown' ? gift.tierLabel : `${gift.tierLabel} · ${gift.rarity}`;
+    const detail = a.boost ? '⚡ Đẩy nhanh sang chương mới!' : a.note === 'cooldown' ? gift.tierLabel : `${gift.tierLabel} · ${RARITY_LABEL[gift.rarity] || gift.rarity}`;
     this.ov.toast({ user, icon, title: `tặng ${gift.count > 1 ? `${gift.count}× ` : ''}${gift.label}`, detail, points: gift.points, tier: gift.tier, rarity: gift.rarity });
     this.ov.scorePopup(gift.points, icon);
     if (a.sound) this.audio.sfx(a.sound);
@@ -256,7 +257,7 @@ export class Director {
       this.stage.shake(1.4);
       this.audio.sfx('impact');
     }
-    if (a.boost) this.ov.banner({ kicker: '⚡ Chapter Boost', title: `${user.name} đẩy đám cưới sang chương mới!`, user, style: 'gold', ms: 3200 });
+    if (a.boost) this.ov.banner({ kicker: '⚡ Tăng tốc nghi lễ', title: `${user.name} đẩy đám cưới sang chương mới!`, user, style: 'gold', ms: 3200 });
 
     const play = (name) => {
       const spec = INTERACTIONS[name];

@@ -45,7 +45,7 @@ export const CHAPTERS = {
   // ---------------------------------------------------------------- 1
   preparation: {
     scene: 'garden',
-    music: 'prelude',
+    music: 'vn_prelude',
     ambient: { petals: 0.5, bokeh: 0.35 },
     async enter({ stage, ov, signal, quick }) {
       resetPoses(stage);
@@ -93,7 +93,7 @@ export const CHAPTERS = {
   // ---------------------------------------------------------------- 2
   bride_entrance: {
     scene: 'ceremony',
-    music: 'bridal_chorus',
+    music: 'vn_ruoc_dau',
     ambient: { petals: 1, bokeh: 0.3 },
     async enter({ stage, ov, fx, audio, signal, quick }) {
       resetPoses(stage);
@@ -161,7 +161,7 @@ export const CHAPTERS = {
   // ---------------------------------------------------------------- 3
   ceremony: {
     scene: 'ceremony',
-    music: 'piano_romance',
+    music: 'vn_gia_tien',
     ambient: { petals: 0.35, bokeh: 0.6 },
     async enter({ stage, ov, audio, signal, quick }) {
       resetPoses(stage, 'joy');
@@ -207,7 +207,7 @@ export const CHAPTERS = {
   // ---------------------------------------------------------------- 4
   ring_exchange: {
     scene: 'ceremony',
-    music: 'piano_romance',
+    music: 'vn_tinh_ca',
     ambient: { petals: 0.3, bokeh: 0.8 },
     /** The rings are only exchanged when the community fills the Ring Meter (BEATS.ringExchange). */
     async enter({ stage, ov, audio, quick, objectiveDone }) {
@@ -232,7 +232,7 @@ export const CHAPTERS = {
       gm1.setPose('idle');
       await gm1.moveTo(stage.mark('gm1').x, stage.mark('gm1').y, { speed: 120 });
       bride.setPose('hold');
-      ov.bubble(mc, 'Hãy tặng quà để lấp đầy Ring Meter! 💍', { style: 'mc', ms: 3600 });
+      ov.bubble(mc, 'Hãy tặng quà để lấp đầy thanh Nhẫn cưới! 💍', { style: 'mc', ms: 3600 });
     },
     async loop({ stage, ov, fx, audio, signal }) {
       let n = 0;
@@ -253,7 +253,7 @@ export const CHAPTERS = {
   // ---------------------------------------------------------------- 5
   kiss: {
     scene: 'ceremony',
-    music: 'wedding_march',
+    music: 'vn_hon_le',
     ambient: { petals: 0.8, bokeh: 0.5 },
     async enter({ stage, ov, fx, audio, signal, quick, couple }) {
       resetPoses(stage, 'joy');
@@ -288,7 +288,7 @@ export const CHAPTERS = {
       await wait(900, signal);
       ov.flash('#fff6ea', 900);
       stage.shake(1.2);
-      ov.megaTitle({ kicker: '💍 The Wedding Kiss', title: 'WEDDING COMPLETE!', sub: `${couple.groomName} & ${couple.brideName}`, style: 'gold', ms: 3600 });
+      ov.megaTitle({ kicker: '💍 Nên duyên vợ chồng', title: 'ĐÁM CƯỚI VIÊN MÃN!', sub: `${couple.groomName} & ${couple.brideName}`, style: 'gold', ms: 3600 });
       audio.sfx('bells');
       audio.sfx('impact');
       audio.sfx('fireworks', { count: 4 });
@@ -299,7 +299,7 @@ export const CHAPTERS = {
       audio.sfx('cheer');
       stage.setCamera({ zoom: 1.08, x: 960, y: 560, ms: 3200 });
       await wait(3000, signal);
-      ov.banner({ kicker: 'Just Married', title: `${couple.groomName} & ${couple.brideName}`, sub: 'Chính thức thành vợ chồng! 💍', style: 'married', ms: 5200 });
+      ov.banner({ kicker: 'Vợ chồng son', title: `${couple.groomName} & ${couple.brideName}`, sub: 'Chính thức thành vợ chồng! 💍', style: 'married', ms: 5200 });
       await wait(1200, signal);
       groom.setPose('cheer');
       bride.setPose('cheer');
@@ -335,7 +335,7 @@ export const CHAPTERS = {
   // ---------------------------------------------------------------- 6
   reception: {
     scene: 'reception',
-    music: 'waltz',
+    music: 'vn_celebration',
     ambient: { petals: 0.2, bokeh: 0.9 },
     async enter({ stage, ov, audio, signal, quick }) {
       resetPoses(stage, 'joy');
@@ -368,7 +368,7 @@ export const CHAPTERS = {
   // ---------------------------------------------------------------- 7
   finale: {
     scene: 'grand',
-    music: 'finale',
+    music: 'vn_tram_nam',
     ambient: { petals: 0.4, bokeh: 1.1 },
     async enter({ stage, ov, fx, audio, signal, quick, couple, summary }) {
       resetPoses(stage, 'joy');
@@ -400,7 +400,7 @@ export const CHAPTERS = {
       fx.confettiBoth(200);
       ov.beams(true, { tint: 'gold' });
       ov.flash('#fff0d8', 900);
-      ov.banner({ kicker: 'Forever Together', title: `${couple.groomName} & ${couple.brideName}`, sub: 'Hạnh phúc trọn đời ♥', style: 'married', ms: 5600 });
+      ov.banner({ kicker: 'Trăm năm hạnh phúc', title: `${couple.groomName} & ${couple.brideName}`, sub: 'Hạnh phúc trọn đời ♥', style: 'married', ms: 5600 });
       stage.setCamera({ zoom: 1, x: 960, y: 540, ms: 3400 });
       await wait(5200, signal);
       ov.letterbox(false);
@@ -443,7 +443,7 @@ export const BEATS = {
     fx.sparkles(80, { x: 960, y: 520, w: 1100, h: 500 });
     fx.petalsFall(70);
     stage.guestsReact('cheer');
-    ov.banner({ kicker: 'Preparation Complete', title: 'Lễ đường đã sẵn sàng! 🌿', sub: 'Cảm ơn cả nhà đã cùng trang trí', style: 'gold', ms: 3600 });
+    ov.banner({ kicker: 'Chuẩn bị hoàn tất', title: 'Lễ đường đã sẵn sàng! 🌿', sub: 'Cảm ơn cả nhà đã cùng trang trí', style: 'gold', ms: 3600 });
     await wait(1800);
   },
 
@@ -475,7 +475,7 @@ export const BEATS = {
     audio.sfx('bells');
     audio.sfx('applause');
     stage.guestsReact('cheer');
-    ov.banner({ kicker: 'Ring Exchange', title: 'Nhẫn cưới đã được trao! 💍', sub: 'Cả cộng đồng đã cùng chứng giám', style: 'gold', ms: 3600 });
+    ov.banner({ kicker: 'Trao nhẫn cưới', title: 'Nhẫn cưới đã được trao! 💍', sub: 'Cả cộng đồng đã cùng chứng giám', style: 'gold', ms: 3600 });
     await wait(2400, signal);
     groom.setPose('hold');
     bride.setPose('hold');
@@ -501,7 +501,7 @@ export const BEATS = {
     fx.giftExplosion(p.x, p.y + 60, 'rare');
     audio.sfx('applause');
     stage.guestsReact('cheer');
-    ov.banner({ kicker: 'Cake Meter', title: 'Cắt bánh cưới! 🎂', style: 'pink', ms: 3000 });
+    ov.banner({ kicker: 'Bánh cưới', title: 'Cắt bánh cưới! 🎂', style: 'pink', ms: 3000 });
     await wait(3200, signal);
     groom.setPose('idle');
     bride.setPose('idle');
@@ -529,7 +529,7 @@ export const BEATS = {
     audio.sfx('glassClink');
     ov.bubble(gm2, 'Dzô! 🥂', { ms: 2000 });
     ov.bubble(bm2, 'Trăm phần trăm!', { ms: 2000 });
-    ov.banner({ kicker: 'Champagne Meter', title: 'Nâng ly chúc mừng! 🥂', style: 'gold', ms: 3000 });
+    ov.banner({ kicker: 'Rượu mừng', title: 'Nâng ly chúc mừng! Một, hai, ba, dzô! 🥂', style: 'gold', ms: 3000 });
     await wait(3000, signal);
     ov.beams(false);
     groom.setPose('idle');
@@ -546,7 +546,7 @@ export const BEATS = {
     for (const a of [groom, bride, gm1, gm2, bm1, bm2]) a.setPose('dance');
     groom.face(1);
     bride.face(-1);
-    ov.banner({ kicker: 'Dance Meter', title: 'First Dance! 💃🕺', style: 'night', ms: 3000 });
+    ov.banner({ kicker: 'Văn nghệ', title: 'Cô dâu chú rể song ca tặng cả nhà! 🎤', style: 'night', ms: 3000 });
     fx.setAmbient({ petals: 0.6, bokeh: 1.4 });
     for (let i = 0; i < 4 && !signal.aborted; i++) {
       groom.react('spin', 1600);
@@ -591,7 +591,7 @@ export const BEATS = {
 
   async celebrationShow({ stage, ov, fx, audio, signal }) {
     ov.beams(true, { tint: 'gold' });
-    ov.banner({ kicker: 'Celebration Meter', title: 'Pháo hoa mừng hạnh phúc! 🎆', style: 'night', ms: 3600 });
+    ov.banner({ kicker: 'Pháo hoa mừng', title: 'Pháo hoa mừng hạnh phúc! 🎆', style: 'night', ms: 3600 });
     for (let i = 0; i < 3 && !signal.aborted; i++) {
       fx.fireworks(4, { delay: 0.25 });
       audio.sfx('fireworks', { count: 2 });

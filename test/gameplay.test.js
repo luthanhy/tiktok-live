@@ -289,10 +289,10 @@ test('comments are read aloud (spaced), keep their emojis and emoji-only comment
   engine.handle({ type: 'comment', user: { id: 'c', name: 'Hà' }, text: 'hôn đi' });
   engine.handle({ type: 'comment', user: { id: 'd', name: 'Nam' }, text: '🐘🐘' });
   const [first, second, third, fourth] = queue.items.map((i) => i.payload);
-  assert.equal(first.tts, 'Tuấn chúc: con đà điểu kìa');
+  assert.match(first.tts, /^Tuấn (chúc|gửi lời chúc): con đà điểu kìa$/);
   assert.deepEqual(first.emojis, ['🦒']);
   assert.equal(second.tts, '', 'second comment inside the gap is shown but not read');
-  assert.equal(third.tts, 'Hà nói: hôn đi');
+  assert.match(third.tts, /^Hà (nói|bảo): hôn đi$/);
   assert.equal(fourth.text, '🐘 🐘');
   assert.equal(fourth.tts, '', 'emoji-only comments are not read aloud');
   assert.equal(engine.publicState().counters.comments, 4);
@@ -307,4 +307,40 @@ test('read-aloud mode can be limited to wishes or switched off', () => {
   clockRef.now += 5000;
   engine.handle({ type: 'comment', user: { id: 'b', name: 'Vy' }, text: 'hôn đi' });
   assert.equal(queue.items[1].payload.tts, '');
+});
+
+test('announcer reads gifts, follows, shares and arrivals in varied Vietnamese, spaced out', () => {
+  const { engine, queue, clockRef } = makeEngine();
+  const ttsOf = (kind) => [...queue.items].reverse().find((i) => i.kind === kind)?.payload.tts;
+  engine.handle({ type: 'gift', user: { id: 'a', name: 'thao.vy_99' }, gift: { id: 5655, name: 'Rose', diamonds: 1, count: 5 } });
+  assert.match(ttsOf('gift'), /thao vy 99/, 'handle separators are spoken as spaces');
+  assert.match(ttsOf('gift'), /5 Hoa Hồng/);
+  clockRef.now += 500;
+  engine.handle({ type: 'follow', user: { id: 'b', name: 'Huy' } });
+  assert.equal(ttsOf('guest_arrival'), '', 'too soon after the last line');
+  clockRef.now += 3000;
+  engine.handle({ type: 'follow', user: { id: 'c', name: 'Lan' } });
+  assert.match(ttsOf('guest_arrival'), /Lan/);
+  clockRef.now += 100;
+  engine.handle({ type: 'gift', user: { id: 'd', name: 'Đại Gia' }, gift: { name: 'Universe', diamonds: 34999, count: 1 } });
+  assert.match(ttsOf('gift'), /Đại Gia/, 'big gifts are always thanked, even inside the gap');
+  clockRef.now += 3000;
+  engine.handle({ type: 'share', user: { id: 'e', name: 'Mai' } });
+  assert.match(ttsOf('confetti'), /Mai/);
+  clockRef.now += 3000;
+  engine.handle({ type: 'join', user: { id: 'f', name: 'Khoa' } });
+  assert.match(ttsOf('welcome'), /Khoa/);
+  clockRef.now += 3000;
+  engine.handle({ type: 'join', user: { id: 'g', name: 'Nga' } });
+  assert.match(ttsOf('welcome'), /Khoa/, 'arrivals are welcomed at most once per joinGapMs');
+});
+
+test('announcer never repeats the same phrasing twice in a row', () => {
+  const { Announcer, LINES } = require('../src/gameplay/announcer');
+  let t = 0;
+  const a = new Announcer({ clock: () => (t += 5000), getConfig: () => ({}), random: () => 0 });
+  const first = a.gift({ name: 'A', gift: 'Hoa', big: false });
+  const second = a.gift({ name: 'A', gift: 'Hoa', big: false });
+  assert.notEqual(first, second);
+  assert.ok(LINES.gift.length >= 3 && LINES.bigGift.length >= 3);
 });
